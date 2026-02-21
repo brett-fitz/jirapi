@@ -1,0 +1,77 @@
+version: "3"
+
+tasks:
+  # ---------------------------------------------------------------------------
+  # Setup
+  # ---------------------------------------------------------------------------
+  setup:
+    desc: Install all dependencies
+    cmd: uv sync --all-groups
+
+  # ---------------------------------------------------------------------------
+  # Linting
+  # ---------------------------------------------------------------------------
+  lint:
+    desc: Run ruff linter
+    cmd: uv run ruff check .
+
+  lint:fix:
+    desc: Run ruff linter with auto-fix
+    cmd: uv run ruff check . --fix
+
+  # ---------------------------------------------------------------------------
+  # Formatting
+  # ---------------------------------------------------------------------------
+  format:
+    desc: Format code with ruff
+    cmd: uv run ruff format .
+
+  format:check:
+    desc: Check formatting without changes
+    cmd: uv run ruff format --check .
+
+  # ---------------------------------------------------------------------------
+  # Testing
+  # ---------------------------------------------------------------------------
+  test:
+    desc: Run unit tests
+    cmd: uv run pytest tests/unit
+
+  test:cov:
+    desc: Run tests with coverage report
+    cmd: uv run pytest --cov=jirapi tests/unit
+
+  test:ci:
+    desc: Run tests with full CI coverage reports
+    cmd: >-
+      uv run pytest tests/unit
+      --cov=jirapi
+      --cov-report=term-missing
+      --cov-report=xml
+      --cov-report=html
+      -v
+
+  test:integration:
+    desc: Run integration tests (requires live API access)
+    cmd: uv run pytest -m integration
+
+  # ---------------------------------------------------------------------------
+  # Building
+  # ---------------------------------------------------------------------------
+  build:
+    desc: Build the package
+    cmd: uv build
+
+  # ---------------------------------------------------------------------------
+  # Quality (CI-like aggregate)
+  # ---------------------------------------------------------------------------
+  check:
+    desc: Run all quality checks (lint + format check + tests)
+    cmds:
+      - task: lint
+      - task: format:check
+      - task: test
+
+  lock:check:
+    desc: Verify uv lockfile is up-to-date
+    cmd: uv lock --check
