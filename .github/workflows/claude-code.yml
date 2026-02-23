@@ -46,7 +46,7 @@ jobs:
 
           claude_args: |
             --model "claude-sonnet-4-6"
-            --allowed-tools Bash(gh issue:*),Bash(gh search:*),Bash(gh pr view:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(gh pr update:*)"
+            --allowed-tools "Bash(gh issue:*),Bash(gh search:*),Bash(gh pr view:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(gh pr update:*)"
 
           track_progress: true
 

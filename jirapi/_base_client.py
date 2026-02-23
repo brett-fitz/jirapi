@@ -8,6 +8,7 @@ via *httpx*.
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any, Self
 
@@ -89,7 +90,10 @@ class _BaseClient:
 
         if exc_cls is RateLimitError:
             retry_after_raw = response.headers.get("Retry-After")
-            retry_after = float(retry_after_raw) if retry_after_raw else None
+            retry_after: float | None = None
+            if retry_after_raw:
+                with contextlib.suppress(ValueError):
+                    retry_after = float(retry_after_raw)
             kwargs["retry_after"] = retry_after
 
         raise exc_cls(message, **kwargs)
