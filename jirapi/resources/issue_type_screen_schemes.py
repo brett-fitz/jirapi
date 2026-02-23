@@ -92,7 +92,7 @@ class IssueTypeScreenSchemes(SyncAPIResource):
         self, body: IssueTypeScreenSchemeProjectAssociation
     ) -> None:
         """Assign issue type screen scheme to project"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/issuetypescreenscheme/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -101,7 +101,7 @@ class IssueTypeScreenSchemes(SyncAPIResource):
 
     def delete_issue_type_screen_scheme(self, issue_type_screen_scheme_id: str) -> None:
         """Delete issue type screen scheme"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}"
         )
         return None
@@ -110,7 +110,7 @@ class IssueTypeScreenSchemes(SyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: IssueTypeScreenSchemeUpdateDetails
     ) -> None:
         """Update issue type screen scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -121,7 +121,7 @@ class IssueTypeScreenSchemes(SyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: IssueTypeScreenSchemeMappingDetails
     ) -> None:
         """Append mappings to issue type screen scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}/mapping",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -132,7 +132,7 @@ class IssueTypeScreenSchemes(SyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: UpdateDefaultScreenScheme
     ) -> None:
         """Update issue type screen scheme default screen scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}/mapping/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -143,7 +143,7 @@ class IssueTypeScreenSchemes(SyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: IssueTypeIds
     ) -> None:
         """Remove mappings from issue type screen scheme"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}/mapping/remove",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -246,7 +246,7 @@ class AsyncIssueTypeScreenSchemes(AsyncAPIResource):
         self, body: IssueTypeScreenSchemeProjectAssociation
     ) -> None:
         """Assign issue type screen scheme to project"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/issuetypescreenscheme/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -255,7 +255,7 @@ class AsyncIssueTypeScreenSchemes(AsyncAPIResource):
 
     async def delete_issue_type_screen_scheme(self, issue_type_screen_scheme_id: str) -> None:
         """Delete issue type screen scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}"
         )
         return None
@@ -264,7 +264,7 @@ class AsyncIssueTypeScreenSchemes(AsyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: IssueTypeScreenSchemeUpdateDetails
     ) -> None:
         """Update issue type screen scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -275,7 +275,7 @@ class AsyncIssueTypeScreenSchemes(AsyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: IssueTypeScreenSchemeMappingDetails
     ) -> None:
         """Append mappings to issue type screen scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}/mapping",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -286,7 +286,7 @@ class AsyncIssueTypeScreenSchemes(AsyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: UpdateDefaultScreenScheme
     ) -> None:
         """Update issue type screen scheme default screen scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}/mapping/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -297,7 +297,7 @@ class AsyncIssueTypeScreenSchemes(AsyncAPIResource):
         self, issue_type_screen_scheme_id: str, body: IssueTypeIds
     ) -> None:
         """Remove mappings from issue type screen scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/issuetypescreenscheme/{issue_type_screen_scheme_id}/mapping/remove",
             json=body.model_dump(by_alias=True, exclude_none=True),

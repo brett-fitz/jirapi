@@ -24,7 +24,7 @@ class Users(SyncAPIResource):
         params = self._client._build_params(
             **{"accountId": account_id, "username": username, "key": key}
         )
-        resp = self._client._request("DELETE", "/rest/api/3/user", params=params)
+        self._client._request("DELETE", "/rest/api/3/user", params=params)
         return None
 
     def get_user(
@@ -91,7 +91,7 @@ class Users(SyncAPIResource):
     ) -> None:
         """Reset user default columns"""
         params = self._client._build_params(**{"accountId": account_id, "username": username})
-        resp = self._client._request("DELETE", "/rest/api/3/user/columns", params=params)
+        self._client._request("DELETE", "/rest/api/3/user/columns", params=params)
         return None
 
     def get_user_default_columns(
@@ -105,7 +105,7 @@ class Users(SyncAPIResource):
     def set_user_columns(self, *, account_id: str | None = None) -> None:
         """Set user default columns"""
         params = self._client._build_params(**{"accountId": account_id})
-        resp = self._client._request("PUT", "/rest/api/3/user/columns", params=params)
+        self._client._request("PUT", "/rest/api/3/user/columns", params=params)
         return None
 
     def get_user_email(self, *, account_id: str) -> UnrestrictedUserEmail:
@@ -155,7 +155,7 @@ class AsyncUsers(AsyncAPIResource):
         params = self._client._build_params(
             **{"accountId": account_id, "username": username, "key": key}
         )
-        resp = await self._client._request("DELETE", "/rest/api/3/user", params=params)
+        await self._client._request("DELETE", "/rest/api/3/user", params=params)
         return None
 
     async def get_user(
@@ -222,7 +222,7 @@ class AsyncUsers(AsyncAPIResource):
     ) -> None:
         """Reset user default columns"""
         params = self._client._build_params(**{"accountId": account_id, "username": username})
-        resp = await self._client._request("DELETE", "/rest/api/3/user/columns", params=params)
+        await self._client._request("DELETE", "/rest/api/3/user/columns", params=params)
         return None
 
     async def get_user_default_columns(
@@ -236,7 +236,7 @@ class AsyncUsers(AsyncAPIResource):
     async def set_user_columns(self, *, account_id: str | None = None) -> None:
         """Set user default columns"""
         params = self._client._build_params(**{"accountId": account_id})
-        resp = await self._client._request("PUT", "/rest/api/3/user/columns", params=params)
+        await self._client._request("PUT", "/rest/api/3/user/columns", params=params)
         return None
 
     async def get_user_email(self, *, account_id: str) -> UnrestrictedUserEmail:

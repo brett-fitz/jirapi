@@ -25,7 +25,7 @@ class TeamsInPlan(SyncAPIResource):
 
     def add_atlassian_team(self, plan_id: str, body: AddAtlassianTeamRequest) -> None:
         """Add Atlassian team to plan"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/plans/plan/{plan_id}/team/atlassian",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -34,7 +34,7 @@ class TeamsInPlan(SyncAPIResource):
 
     def remove_atlassian_team(self, plan_id: str, atlassian_team_id: str) -> None:
         """Remove Atlassian team from plan"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/plans/plan/{plan_id}/team/atlassian/{atlassian_team_id}"
         )
         return None
@@ -48,23 +48,23 @@ class TeamsInPlan(SyncAPIResource):
 
     def update_atlassian_team(self, plan_id: str, atlassian_team_id: str) -> None:
         """Update Atlassian team in plan"""
-        resp = self._client._request(
+        self._client._request(
             "PUT", f"/rest/api/3/plans/plan/{plan_id}/team/atlassian/{atlassian_team_id}"
         )
         return None
 
-    def create_plan_only_team(self, plan_id: str, body: CreatePlanOnlyTeamRequest) -> None:
+    def create_plan_only_team(self, plan_id: str, body: CreatePlanOnlyTeamRequest) -> int:
         """Create plan-only team"""
         resp = self._client._request(
             "POST",
             f"/rest/api/3/plans/plan/{plan_id}/team/planonly",
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     def delete_plan_only_team(self, plan_id: str, plan_only_team_id: str) -> None:
         """Delete plan-only team"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/plans/plan/{plan_id}/team/planonly/{plan_only_team_id}"
         )
         return None
@@ -78,7 +78,7 @@ class TeamsInPlan(SyncAPIResource):
 
     def update_plan_only_team(self, plan_id: str, plan_only_team_id: str) -> None:
         """Update plan-only team"""
-        resp = self._client._request(
+        self._client._request(
             "PUT", f"/rest/api/3/plans/plan/{plan_id}/team/planonly/{plan_only_team_id}"
         )
         return None
@@ -99,7 +99,7 @@ class AsyncTeamsInPlan(AsyncAPIResource):
 
     async def add_atlassian_team(self, plan_id: str, body: AddAtlassianTeamRequest) -> None:
         """Add Atlassian team to plan"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/plans/plan/{plan_id}/team/atlassian",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -108,7 +108,7 @@ class AsyncTeamsInPlan(AsyncAPIResource):
 
     async def remove_atlassian_team(self, plan_id: str, atlassian_team_id: str) -> None:
         """Remove Atlassian team from plan"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/plans/plan/{plan_id}/team/atlassian/{atlassian_team_id}"
         )
         return None
@@ -124,23 +124,23 @@ class AsyncTeamsInPlan(AsyncAPIResource):
 
     async def update_atlassian_team(self, plan_id: str, atlassian_team_id: str) -> None:
         """Update Atlassian team in plan"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/plans/plan/{plan_id}/team/atlassian/{atlassian_team_id}"
         )
         return None
 
-    async def create_plan_only_team(self, plan_id: str, body: CreatePlanOnlyTeamRequest) -> None:
+    async def create_plan_only_team(self, plan_id: str, body: CreatePlanOnlyTeamRequest) -> int:
         """Create plan-only team"""
         resp = await self._client._request(
             "POST",
             f"/rest/api/3/plans/plan/{plan_id}/team/planonly",
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     async def delete_plan_only_team(self, plan_id: str, plan_only_team_id: str) -> None:
         """Delete plan-only team"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/plans/plan/{plan_id}/team/planonly/{plan_only_team_id}"
         )
         return None
@@ -156,7 +156,7 @@ class AsyncTeamsInPlan(AsyncAPIResource):
 
     async def update_plan_only_team(self, plan_id: str, plan_only_team_id: str) -> None:
         """Update plan-only team"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/plans/plan/{plan_id}/team/planonly/{plan_only_team_id}"
         )
         return None

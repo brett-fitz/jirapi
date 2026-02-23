@@ -74,9 +74,7 @@ class Projects(SyncAPIResource):
     def delete_project(self, project_id_or_key: str, *, enable_undo: bool | None = None) -> None:
         """Delete project"""
         params = self._client._build_params(**{"enableUndo": enable_undo})
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/project/{project_id_or_key}", params=params
-        )
+        self._client._request("DELETE", f"/rest/api/3/project/{project_id_or_key}", params=params)
         return None
 
     def get_project(
@@ -108,12 +106,12 @@ class Projects(SyncAPIResource):
 
     def archive_project(self, project_id_or_key: str) -> None:
         """Archive project"""
-        resp = self._client._request("POST", f"/rest/api/3/project/{project_id_or_key}/archive")
+        self._client._request("POST", f"/rest/api/3/project/{project_id_or_key}/archive")
         return None
 
     def delete_project_asynchronously(self, project_id_or_key: str) -> None:
         """Delete project asynchronously"""
-        resp = self._client._request("POST", f"/rest/api/3/project/{project_id_or_key}/delete")
+        self._client._request("POST", f"/rest/api/3/project/{project_id_or_key}/delete")
         return None
 
     def restore(self, project_id_or_key: str) -> Project:
@@ -203,7 +201,7 @@ class AsyncProjects(AsyncAPIResource):
     ) -> None:
         """Delete project"""
         params = self._client._build_params(**{"enableUndo": enable_undo})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}", params=params
         )
         return None
@@ -237,16 +235,12 @@ class AsyncProjects(AsyncAPIResource):
 
     async def archive_project(self, project_id_or_key: str) -> None:
         """Archive project"""
-        resp = await self._client._request(
-            "POST", f"/rest/api/3/project/{project_id_or_key}/archive"
-        )
+        await self._client._request("POST", f"/rest/api/3/project/{project_id_or_key}/archive")
         return None
 
     async def delete_project_asynchronously(self, project_id_or_key: str) -> None:
         """Delete project asynchronously"""
-        resp = await self._client._request(
-            "POST", f"/rest/api/3/project/{project_id_or_key}/delete"
-        )
+        await self._client._request("POST", f"/rest/api/3/project/{project_id_or_key}/delete")
         return None
 
     async def restore(self, project_id_or_key: str) -> Project:

@@ -31,7 +31,7 @@ class PermissionSchemes(SyncAPIResource):
 
     def delete_permission_scheme(self, scheme_id: str) -> None:
         """Delete permission scheme"""
-        resp = self._client._request("DELETE", f"/rest/api/3/permissionscheme/{scheme_id}")
+        self._client._request("DELETE", f"/rest/api/3/permissionscheme/{scheme_id}")
         return None
 
     def get_permission_scheme(
@@ -82,7 +82,7 @@ class PermissionSchemes(SyncAPIResource):
 
     def delete_permission_scheme_entity(self, scheme_id: str, permission_id: str) -> None:
         """Delete permission scheme grant"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/permissionscheme/{scheme_id}/permission/{permission_id}"
         )
         return None
@@ -126,7 +126,7 @@ class AsyncPermissionSchemes(AsyncAPIResource):
 
     async def delete_permission_scheme(self, scheme_id: str) -> None:
         """Delete permission scheme"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/permissionscheme/{scheme_id}")
+        await self._client._request("DELETE", f"/rest/api/3/permissionscheme/{scheme_id}")
         return None
 
     async def get_permission_scheme(
@@ -177,7 +177,7 @@ class AsyncPermissionSchemes(AsyncAPIResource):
 
     async def delete_permission_scheme_entity(self, scheme_id: str, permission_id: str) -> None:
         """Delete permission scheme grant"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/permissionscheme/{scheme_id}/permission/{permission_id}"
         )
         return None

@@ -64,7 +64,7 @@ class IssueSecuritySchemes(SyncAPIResource):
 
     def set_default_levels(self, body: SetDefaultLevelsRequest) -> None:
         """Set default issue security levels"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/issuesecurityschemes/level/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -123,7 +123,7 @@ class IssueSecuritySchemes(SyncAPIResource):
         self, body: AssociateSecuritySchemeWithProjectDetails
     ) -> None:
         """Associate security scheme to project"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/issuesecurityschemes/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -156,7 +156,7 @@ class IssueSecuritySchemes(SyncAPIResource):
         self, id_: str, body: UpdateIssueSecuritySchemeRequestBean
     ) -> None:
         """Update issue security scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{id_}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -165,12 +165,12 @@ class IssueSecuritySchemes(SyncAPIResource):
 
     def delete_security_scheme(self, scheme_id: str) -> None:
         """Delete issue security scheme"""
-        resp = self._client._request("DELETE", f"/rest/api/3/issuesecurityschemes/{scheme_id}")
+        self._client._request("DELETE", f"/rest/api/3/issuesecurityschemes/{scheme_id}")
         return None
 
     def add_security_level(self, scheme_id: str, body: AddSecuritySchemeLevelsRequestBean) -> None:
         """Add issue security levels"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -182,7 +182,7 @@ class IssueSecuritySchemes(SyncAPIResource):
     ) -> None:
         """Remove issue security level"""
         params = self._client._build_params(**{"replaceWith": replace_with})
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}",
             params=params,
@@ -193,7 +193,7 @@ class IssueSecuritySchemes(SyncAPIResource):
         self, scheme_id: str, level_id: str, body: UpdateIssueSecurityLevelDetails
     ) -> None:
         """Update issue security level"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -204,7 +204,7 @@ class IssueSecuritySchemes(SyncAPIResource):
         self, scheme_id: str, level_id: str, body: SecuritySchemeMembersRequest
     ) -> None:
         """Add issue security level members"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}/member",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -215,7 +215,7 @@ class IssueSecuritySchemes(SyncAPIResource):
         self, scheme_id: str, level_id: str, member_id: str
     ) -> None:
         """Remove member from issue security level"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}/member/{member_id}",
         )
@@ -267,7 +267,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
 
     async def set_default_levels(self, body: SetDefaultLevelsRequest) -> None:
         """Set default issue security levels"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/issuesecurityschemes/level/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -326,7 +326,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
         self, body: AssociateSecuritySchemeWithProjectDetails
     ) -> None:
         """Associate security scheme to project"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/issuesecurityschemes/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -359,7 +359,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
         self, id_: str, body: UpdateIssueSecuritySchemeRequestBean
     ) -> None:
         """Update issue security scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{id_}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -368,16 +368,14 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
 
     async def delete_security_scheme(self, scheme_id: str) -> None:
         """Delete issue security scheme"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/issuesecurityschemes/{scheme_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/issuesecurityschemes/{scheme_id}")
         return None
 
     async def add_security_level(
         self, scheme_id: str, body: AddSecuritySchemeLevelsRequestBean
     ) -> None:
         """Add issue security levels"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -389,7 +387,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
     ) -> None:
         """Remove issue security level"""
         params = self._client._build_params(**{"replaceWith": replace_with})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}",
             params=params,
@@ -400,7 +398,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
         self, scheme_id: str, level_id: str, body: UpdateIssueSecurityLevelDetails
     ) -> None:
         """Update issue security level"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -411,7 +409,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
         self, scheme_id: str, level_id: str, body: SecuritySchemeMembersRequest
     ) -> None:
         """Add issue security level members"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}/member",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -422,7 +420,7 @@ class AsyncIssueSecuritySchemes(AsyncAPIResource):
         self, scheme_id: str, level_id: str, member_id: str
     ) -> None:
         """Remove member from issue security level"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/issuesecurityschemes/{scheme_id}/level/{level_id}/member/{member_id}",
         )

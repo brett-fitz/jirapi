@@ -16,7 +16,7 @@ class AnnouncementBanner(SyncAPIResource):
 
     def set_banner(self, body: AnnouncementBannerConfigurationUpdate) -> None:
         """Update announcement banner configuration"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/announcementBanner",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -34,7 +34,7 @@ class AsyncAnnouncementBanner(AsyncAPIResource):
 
     async def set_banner(self, body: AnnouncementBannerConfigurationUpdate) -> None:
         """Update announcement banner configuration"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/announcementBanner",
             json=body.model_dump(by_alias=True, exclude_none=True),

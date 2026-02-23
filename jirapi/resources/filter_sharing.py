@@ -39,9 +39,7 @@ class FilterSharing(SyncAPIResource):
 
     def delete_share_permission(self, id_: str, permission_id: str) -> None:
         """Delete share permission"""
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/filter/{id_}/permission/{permission_id}"
-        )
+        self._client._request("DELETE", f"/rest/api/3/filter/{id_}/permission/{permission_id}")
         return None
 
     def get_share_permission(self, id_: str, permission_id: str) -> SharePermission:
@@ -85,7 +83,7 @@ class AsyncFilterSharing(AsyncAPIResource):
 
     async def delete_share_permission(self, id_: str, permission_id: str) -> None:
         """Delete share permission"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/filter/{id_}/permission/{permission_id}"
         )
         return None

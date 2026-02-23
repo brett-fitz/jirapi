@@ -19,7 +19,7 @@ class WorkflowSchemeProjectAssociations(SyncAPIResource):
 
     def assign_scheme_to_project(self, body: WorkflowSchemeProjectAssociation) -> None:
         """Assign workflow scheme to project"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/workflowscheme/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -42,7 +42,7 @@ class AsyncWorkflowSchemeProjectAssociations(AsyncAPIResource):
 
     async def assign_scheme_to_project(self, body: WorkflowSchemeProjectAssociation) -> None:
         """Assign workflow scheme to project"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/workflowscheme/project",
             json=body.model_dump(by_alias=True, exclude_none=True),

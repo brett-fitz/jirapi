@@ -60,7 +60,7 @@ class IssueComments(SyncAPIResource):
 
     def delete_comment(self, issue_id_or_key: str, id_: str) -> None:
         """Delete comment"""
-        resp = self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/comment/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/comment/{id_}")
         return None
 
     def get_comment(self, issue_id_or_key: str, id_: str, *, expand: str | None = None) -> Comment:
@@ -152,9 +152,7 @@ class AsyncIssueComments(AsyncAPIResource):
 
     async def delete_comment(self, issue_id_or_key: str, id_: str) -> None:
         """Delete comment"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/issue/{issue_id_or_key}/comment/{id_}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/comment/{id_}")
         return None
 
     async def get_comment(

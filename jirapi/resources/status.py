@@ -20,7 +20,7 @@ class Status(SyncAPIResource):
     def delete_statuses_by_id(self, *, id_: list[str]) -> None:
         """Bulk delete Statuses"""
         params = self._client._build_params(**{"id": id_})
-        resp = self._client._request("DELETE", "/rest/api/3/statuses", params=params)
+        self._client._request("DELETE", "/rest/api/3/statuses", params=params)
         return None
 
     def get_statuses_by_id(self, *, id_: list[str]) -> JiraStatus:
@@ -38,7 +38,7 @@ class Status(SyncAPIResource):
 
     def update_statuses(self, body: StatusUpdateRequest) -> None:
         """Bulk update statuses"""
-        resp = self._client._request(
+        self._client._request(
             "PUT", "/rest/api/3/statuses", json=body.model_dump(by_alias=True, exclude_none=True)
         )
         return None
@@ -121,7 +121,7 @@ class AsyncStatus(AsyncAPIResource):
     async def delete_statuses_by_id(self, *, id_: list[str]) -> None:
         """Bulk delete Statuses"""
         params = self._client._build_params(**{"id": id_})
-        resp = await self._client._request("DELETE", "/rest/api/3/statuses", params=params)
+        await self._client._request("DELETE", "/rest/api/3/statuses", params=params)
         return None
 
     async def get_statuses_by_id(self, *, id_: list[str]) -> JiraStatus:
@@ -139,7 +139,7 @@ class AsyncStatus(AsyncAPIResource):
 
     async def update_statuses(self, body: StatusUpdateRequest) -> None:
         """Bulk update statuses"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", "/rest/api/3/statuses", json=body.model_dump(by_alias=True, exclude_none=True)
         )
         return None

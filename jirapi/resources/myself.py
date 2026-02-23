@@ -12,19 +12,19 @@ class Myself(SyncAPIResource):
     def remove_preference(self, *, key: str) -> None:
         """Delete preference"""
         params = self._client._build_params(**{"key": key})
-        resp = self._client._request("DELETE", "/rest/api/3/mypreferences", params=params)
+        self._client._request("DELETE", "/rest/api/3/mypreferences", params=params)
         return None
 
-    def get_preference(self, *, key: str) -> None:
+    def get_preference(self, *, key: str) -> str:
         """Get preference"""
         params = self._client._build_params(**{"key": key})
         resp = self._client._request("GET", "/rest/api/3/mypreferences", params=params)
-        return None
+        return resp.json()
 
     def set_preference(self, *, key: str) -> None:
         """Set preference"""
         params = self._client._build_params(**{"key": key})
-        resp = self._client._request("PUT", "/rest/api/3/mypreferences", params=params)
+        self._client._request("PUT", "/rest/api/3/mypreferences", params=params)
         return None
 
     def get_locale(self) -> Locale:
@@ -45,19 +45,19 @@ class AsyncMyself(AsyncAPIResource):
     async def remove_preference(self, *, key: str) -> None:
         """Delete preference"""
         params = self._client._build_params(**{"key": key})
-        resp = await self._client._request("DELETE", "/rest/api/3/mypreferences", params=params)
+        await self._client._request("DELETE", "/rest/api/3/mypreferences", params=params)
         return None
 
-    async def get_preference(self, *, key: str) -> None:
+    async def get_preference(self, *, key: str) -> str:
         """Get preference"""
         params = self._client._build_params(**{"key": key})
         resp = await self._client._request("GET", "/rest/api/3/mypreferences", params=params)
-        return None
+        return resp.json()
 
     async def set_preference(self, *, key: str) -> None:
         """Set preference"""
         params = self._client._build_params(**{"key": key})
-        resp = await self._client._request("PUT", "/rest/api/3/mypreferences", params=params)
+        await self._client._request("PUT", "/rest/api/3/mypreferences", params=params)
         return None
 
     async def get_locale(self) -> Locale:

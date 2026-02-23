@@ -157,6 +157,12 @@ def main() -> None:
     content = OUTPUT_FILE.read_text()
     content = _fix_builtin_shadows(content)
     content = _strip_discriminators(content)
+
+    # Build __all__ from top-level class definitions
+    class_names = sorted(set(re.findall(r"^class (\w+)\(", content, re.MULTILINE)))
+    all_block = "\n\n__all__ = [\n" + "".join(f'    "{name}",\n' for name in class_names) + "]\n"
+    content += all_block
+
     OUTPUT_FILE.write_text(content)
 
     print("Running ruff format …")

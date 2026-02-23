@@ -12,7 +12,7 @@ class ProjectAvatars(SyncAPIResource):
 
     def update_project_avatar(self, project_id_or_key: str, body: Avatar) -> None:
         """Set project avatar"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/project/{project_id_or_key}/avatar",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -21,9 +21,7 @@ class ProjectAvatars(SyncAPIResource):
 
     def delete_project_avatar(self, project_id_or_key: str, id_: str) -> None:
         """Delete project avatar"""
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/project/{project_id_or_key}/avatar/{id_}"
-        )
+        self._client._request("DELETE", f"/rest/api/3/project/{project_id_or_key}/avatar/{id_}")
         return None
 
     def create_project_avatar(
@@ -52,7 +50,7 @@ class AsyncProjectAvatars(AsyncAPIResource):
 
     async def update_project_avatar(self, project_id_or_key: str, body: Avatar) -> None:
         """Set project avatar"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/project/{project_id_or_key}/avatar",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -61,7 +59,7 @@ class AsyncProjectAvatars(AsyncAPIResource):
 
     async def delete_project_avatar(self, project_id_or_key: str, id_: str) -> None:
         """Delete project avatar"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/avatar/{id_}"
         )
         return None

@@ -11,7 +11,7 @@ class IssueVotes(SyncAPIResource):
 
     def remove_vote(self, issue_id_or_key: str) -> None:
         """Delete vote"""
-        resp = self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/votes")
+        self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/votes")
         return None
 
     def get_votes(self, issue_id_or_key: str) -> Votes:
@@ -21,7 +21,7 @@ class IssueVotes(SyncAPIResource):
 
     def add_vote(self, issue_id_or_key: str) -> None:
         """Add vote"""
-        resp = self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/votes")
+        self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/votes")
         return None
 
 
@@ -30,7 +30,7 @@ class AsyncIssueVotes(AsyncAPIResource):
 
     async def remove_vote(self, issue_id_or_key: str) -> None:
         """Delete vote"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/votes")
+        await self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}/votes")
         return None
 
     async def get_votes(self, issue_id_or_key: str) -> Votes:
@@ -40,5 +40,5 @@ class AsyncIssueVotes(AsyncAPIResource):
 
     async def add_vote(self, issue_id_or_key: str) -> None:
         """Add vote"""
-        resp = await self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/votes")
+        await self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/votes")
         return None

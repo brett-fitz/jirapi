@@ -80,7 +80,7 @@ class IssueNotificationSchemes(SyncAPIResource):
 
     def update_notification_scheme(self, id_: str, body: UpdateNotificationSchemeDetails) -> None:
         """Update notification scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/notificationscheme/{id_}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -89,7 +89,7 @@ class IssueNotificationSchemes(SyncAPIResource):
 
     def add_notifications(self, id_: str, body: AddNotificationsDetails) -> None:
         """Add notifications to notification scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/notificationscheme/{id_}/notification",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -98,16 +98,14 @@ class IssueNotificationSchemes(SyncAPIResource):
 
     def delete_notification_scheme(self, notification_scheme_id: str) -> None:
         """Delete notification scheme"""
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/notificationscheme/{notification_scheme_id}"
-        )
+        self._client._request("DELETE", f"/rest/api/3/notificationscheme/{notification_scheme_id}")
         return None
 
     def remove_notification_from_notification_scheme(
         self, notification_scheme_id: str, notification_id: str
     ) -> None:
         """Remove notification from notification scheme"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/notificationscheme/{notification_scheme_id}/notification/{notification_id}",
         )
@@ -188,7 +186,7 @@ class AsyncIssueNotificationSchemes(AsyncAPIResource):
         self, id_: str, body: UpdateNotificationSchemeDetails
     ) -> None:
         """Update notification scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/notificationscheme/{id_}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -197,7 +195,7 @@ class AsyncIssueNotificationSchemes(AsyncAPIResource):
 
     async def add_notifications(self, id_: str, body: AddNotificationsDetails) -> None:
         """Add notifications to notification scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/notificationscheme/{id_}/notification",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -206,7 +204,7 @@ class AsyncIssueNotificationSchemes(AsyncAPIResource):
 
     async def delete_notification_scheme(self, notification_scheme_id: str) -> None:
         """Delete notification scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/notificationscheme/{notification_scheme_id}"
         )
         return None
@@ -215,7 +213,7 @@ class AsyncIssueNotificationSchemes(AsyncAPIResource):
         self, notification_scheme_id: str, notification_id: str
     ) -> None:
         """Remove notification from notification scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/notificationscheme/{notification_scheme_id}/notification/{notification_id}",
         )

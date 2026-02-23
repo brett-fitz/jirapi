@@ -22,7 +22,7 @@ class WorkflowSchemeDrafts(SyncAPIResource):
 
     def delete_workflow_scheme_draft(self, id_: str) -> None:
         """Delete draft workflow scheme"""
-        resp = self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}/draft")
+        self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}/draft")
         return None
 
     def get_workflow_scheme_draft(self, id_: str) -> WorkflowScheme:
@@ -90,7 +90,7 @@ class WorkflowSchemeDrafts(SyncAPIResource):
     ) -> None:
         """Publish draft workflow scheme"""
         params = self._client._build_params(**{"validateOnly": validate_only})
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/workflowscheme/{id_}/draft/publish",
             params=params,
@@ -101,7 +101,7 @@ class WorkflowSchemeDrafts(SyncAPIResource):
     def delete_draft_workflow_mapping(self, id_: str, *, workflow_name: str) -> None:
         """Delete issue types for workflow in draft workflow scheme"""
         params = self._client._build_params(**{"workflowName": workflow_name})
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/workflowscheme/{id_}/draft/workflow", params=params
         )
         return None
@@ -140,7 +140,7 @@ class AsyncWorkflowSchemeDrafts(AsyncAPIResource):
 
     async def delete_workflow_scheme_draft(self, id_: str) -> None:
         """Delete draft workflow scheme"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}/draft")
+        await self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}/draft")
         return None
 
     async def get_workflow_scheme_draft(self, id_: str) -> WorkflowScheme:
@@ -214,7 +214,7 @@ class AsyncWorkflowSchemeDrafts(AsyncAPIResource):
     ) -> None:
         """Publish draft workflow scheme"""
         params = self._client._build_params(**{"validateOnly": validate_only})
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/workflowscheme/{id_}/draft/publish",
             params=params,
@@ -225,7 +225,7 @@ class AsyncWorkflowSchemeDrafts(AsyncAPIResource):
     async def delete_draft_workflow_mapping(self, id_: str, *, workflow_name: str) -> None:
         """Delete issue types for workflow in draft workflow scheme"""
         params = self._client._build_params(**{"workflowName": workflow_name})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/workflowscheme/{id_}/draft/workflow", params=params
         )
         return None

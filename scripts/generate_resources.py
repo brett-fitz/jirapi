@@ -138,6 +138,11 @@ def _resolve_schema_ref(schema: dict[str, Any]) -> str | None:
         return _ref_to_model(schema["$ref"])
     if "items" in schema and "$ref" in schema.get("items", {}):
         return _ref_to_model(schema["items"]["$ref"])
+    if "oneOf" in schema:
+        for variant in schema["oneOf"]:
+            ref = _ref_to_model(variant.get("$ref"))
+            if ref:
+                return ref
     return None
 
 
@@ -157,8 +162,25 @@ def _openapi_type_to_python(param: dict[str, Any]) -> str:
     return py
 
 
+_PRIMITIVE_TYPE_MAP: dict[str, str] = {
+    "string": "str",
+    "integer": "int",
+    "number": "float",
+    "boolean": "bool",
+}
+
+_NON_MODEL_TYPES: set[str] = {"str", "int", "float", "bool", "dict[str, Any]"}
+
+
 def _get_success_response(op: dict[str, Any]) -> tuple[str | None, str]:
-    """Return (model_name, status_code) for the first 2xx response with a schema."""
+    """Return (response_type, status_code) for the first 2xx response with a schema.
+
+    response_type is one of:
+    - A Pydantic model name (e.g. "IssueBean")
+    - A primitive Python type literal (e.g. "str", "int")
+    - "dict[str, Any]" for unstructured objects
+    - None for no-content responses
+    """
     for code in ("200", "201", "202", "204"):
         resp = op.get("responses", {}).get(code)
         if not resp:
@@ -171,10 +193,11 @@ def _get_success_response(op: dict[str, Any]) -> tuple[str | None, str]:
         model = _resolve_schema_ref(schema)
         if model:
             return model, code
-        if schema.get("type") == "array":
-            item_model = _resolve_schema_ref(schema)
-            if item_model:
-                return item_model, code
+        schema_type = schema.get("type")
+        if schema_type in _PRIMITIVE_TYPE_MAP:
+            return _PRIMITIVE_TYPE_MAP[schema_type], code
+        if schema_type == "object" and ("additionalProperties" in schema or "properties" in schema):
+            return "dict[str, Any]", code
         return None, code
     return None, "200"
 
@@ -320,17 +343,19 @@ def _build_method_body(op: dict[str, Any], *, is_async: bool, renames: dict[str,
     await_prefix = "await " if is_async else ""
     method = op["http_method"]
     url_expr = f'f"{path}"' if op["path_params"] else f'"{path}"'
-    lines.append(
-        f'        resp = {await_prefix}self._client._request("{method}", {url_expr}{kwargs_str})'
-    )
+    call = f'{await_prefix}self._client._request("{method}", {url_expr}{kwargs_str})'
 
     # Return
-    if op["response_model"]:
-        model = renames.get(op["response_model"], op["response_model"])
+    resp_type = op["response_model"]
+    if resp_type and resp_type not in _NON_MODEL_TYPES:
+        lines.append(f"        resp = {call}")
+        model = renames.get(resp_type, resp_type)
         lines.append(f"        return {model}.model_validate(resp.json())")
-    elif op["status_code"] == "204":
-        lines.append("        return None")
+    elif resp_type in _NON_MODEL_TYPES:
+        lines.append(f"        resp = {call}")
+        lines.append("        return resp.json()")
     else:
+        lines.append(f"        {call}")
         lines.append("        return None")
 
     return lines
@@ -341,19 +366,25 @@ def generate_resource_file(tag: str, operations: list[dict[str, Any]]) -> str:
     class_name = _tag_to_class(tag)
     async_class_name = f"Async{class_name}"
 
-    # Collect model imports
+    # Collect model imports (exclude primitive/dict return types)
     models: set[str] = set()
+    needs_typing_any = False
     for op in operations:
         if op["request_model"]:
             models.add(op["request_model"])
-        if op["response_model"]:
+        if op["response_model"] and op["response_model"] not in _NON_MODEL_TYPES:
             models.add(op["response_model"])
+        if op["response_model"] == "dict[str, Any]":
+            needs_typing_any = True
 
     lines: list[str] = []
     lines.append(f'"""Resource classes for the {tag} API group."""')
     lines.append("")
     lines.append("from __future__ import annotations")
     lines.append("")
+    if needs_typing_any:
+        lines.append("from typing import Any")
+        lines.append("")
 
     # Avoid import conflicts: if a model name matches the resource class name
     conflicting = models & {class_name, async_class_name}
@@ -447,7 +478,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
-from jirapi._base_client import AsyncAPIClient, SyncAPIClient
+from jirapi._base_client import AsyncAPIClient, SyncAPIClient, _DEFAULT_TIMEOUT
 
 
 if TYPE_CHECKING:
@@ -478,7 +509,7 @@ class Jira(SyncAPIClient):
         url: str,
         email: str,
         api_token: str,
-        timeout: float = 30.0,
+        timeout: float = _DEFAULT_TIMEOUT,
         **httpx_client_kwargs: Any,
     ) -> None:
         super().__init__(
@@ -510,7 +541,7 @@ class AsyncJira(AsyncAPIClient):
         url: str,
         email: str,
         api_token: str,
-        timeout: float = 30.0,
+        timeout: float = _DEFAULT_TIMEOUT,
         **httpx_client_kwargs: Any,
     ) -> None:
         super().__init__(
@@ -550,10 +581,15 @@ def main() -> None:
 
     # Write resources __init__
     init_lines = ['"""Generated resource classes for the Jira Cloud REST API."""', ""]
+    all_names: list[str] = []
     for tag in sorted(by_tag.keys()):
         module = _tag_to_module(tag)
         class_name = _tag_to_class(tag)
         init_lines.append(f"from jirapi.resources.{module} import Async{class_name}, {class_name}")
+        all_names.extend([f'"{class_name}"', f'"Async{class_name}"'])
+    all_names.sort()
+    init_lines.append("")
+    init_lines.append(f"__all__ = [{', '.join(all_names)}]")
     init_lines.append("")
     (RESOURCES_DIR / "__init__.py").write_text("\n".join(init_lines))
 

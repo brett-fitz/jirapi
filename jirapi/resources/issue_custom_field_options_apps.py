@@ -64,7 +64,7 @@ class IssueCustomFieldOptionsApps(SyncAPIResource):
 
     def delete_issue_field_option(self, field_key: str, option_id: str) -> None:
         """Delete issue field option"""
-        resp = self._client._request("DELETE", f"/rest/api/3/field/{field_key}/option/{option_id}")
+        self._client._request("DELETE", f"/rest/api/3/field/{field_key}/option/{option_id}")
         return None
 
     def get_issue_field_option(self, field_key: str, option_id: str) -> IssueFieldOption:
@@ -102,7 +102,7 @@ class IssueCustomFieldOptionsApps(SyncAPIResource):
                 "overrideEditableFlag": override_editable_flag,
             }
         )
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/field/{field_key}/option/{option_id}/issue", params=params
         )
         return None
@@ -168,9 +168,7 @@ class AsyncIssueCustomFieldOptionsApps(AsyncAPIResource):
 
     async def delete_issue_field_option(self, field_key: str, option_id: str) -> None:
         """Delete issue field option"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/field/{field_key}/option/{option_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/field/{field_key}/option/{option_id}")
         return None
 
     async def get_issue_field_option(self, field_key: str, option_id: str) -> IssueFieldOption:
@@ -210,7 +208,7 @@ class AsyncIssueCustomFieldOptionsApps(AsyncAPIResource):
                 "overrideEditableFlag": override_editable_flag,
             }
         )
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/field/{field_key}/option/{option_id}/issue", params=params
         )
         return None

@@ -68,7 +68,7 @@ class FieldSchemes(SyncAPIResource):
 
     def remove_field_association_scheme_item_parameters(self) -> None:
         """Remove field parameters"""
-        resp = self._client._request("DELETE", "/rest/api/3/config/fieldschemes/fields/parameters")
+        self._client._request("DELETE", "/rest/api/3/config/fieldschemes/fields/parameters")
         return None
 
     def update_field_association_scheme_item_parameters(
@@ -217,9 +217,7 @@ class AsyncFieldSchemes(AsyncAPIResource):
 
     async def remove_field_association_scheme_item_parameters(self) -> None:
         """Remove field parameters"""
-        resp = await self._client._request(
-            "DELETE", "/rest/api/3/config/fieldschemes/fields/parameters"
-        )
+        await self._client._request("DELETE", "/rest/api/3/config/fieldschemes/fields/parameters")
         return None
 
     async def update_field_association_scheme_item_parameters(

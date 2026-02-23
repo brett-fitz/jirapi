@@ -16,7 +16,7 @@ class ProjectProperties(SyncAPIResource):
 
     def delete_project_property(self, project_id_or_key: str, property_key: str) -> None:
         """Delete project property"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/properties/{property_key}"
         )
         return None
@@ -30,7 +30,7 @@ class ProjectProperties(SyncAPIResource):
 
     def set_project_property(self, project_id_or_key: str, property_key: str) -> None:
         """Set project property"""
-        resp = self._client._request(
+        self._client._request(
             "PUT", f"/rest/api/3/project/{project_id_or_key}/properties/{property_key}"
         )
         return None
@@ -48,7 +48,7 @@ class AsyncProjectProperties(AsyncAPIResource):
 
     async def delete_project_property(self, project_id_or_key: str, property_key: str) -> None:
         """Delete project property"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/properties/{property_key}"
         )
         return None
@@ -64,7 +64,7 @@ class AsyncProjectProperties(AsyncAPIResource):
 
     async def set_project_property(self, project_id_or_key: str, property_key: str) -> None:
         """Set project property"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/project/{project_id_or_key}/properties/{property_key}"
         )
         return None

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from jirapi._resource import AsyncAPIResource, SyncAPIResource
 from jirapi.models import CreateUpdateRoleRequestBean, ProjectRole, ProjectRoleDetails
 
@@ -9,10 +11,10 @@ from jirapi.models import CreateUpdateRoleRequestBean, ProjectRole, ProjectRoleD
 class ProjectRoles(SyncAPIResource):
     """Synchronous resource for the Project roles API group."""
 
-    def get_project_roles(self, project_id_or_key: str) -> None:
+    def get_project_roles(self, project_id_or_key: str) -> dict[str, Any]:
         """Get project roles for project"""
         resp = self._client._request("GET", f"/rest/api/3/project/{project_id_or_key}/role")
-        return None
+        return resp.json()
 
     def get_project_role(
         self, project_id_or_key: str, id_: str, *, exclude_inactive_users: bool | None = None
@@ -60,7 +62,7 @@ class ProjectRoles(SyncAPIResource):
     def delete_project_role(self, id_: str, *, swap: int | None = None) -> None:
         """Delete project role"""
         params = self._client._build_params(**{"swap": swap})
-        resp = self._client._request("DELETE", f"/rest/api/3/role/{id_}", params=params)
+        self._client._request("DELETE", f"/rest/api/3/role/{id_}", params=params)
         return None
 
     def get_project_role_by_id(self, id_: str) -> ProjectRole:
@@ -90,10 +92,10 @@ class ProjectRoles(SyncAPIResource):
 class AsyncProjectRoles(AsyncAPIResource):
     """Asynchronous resource for the Project roles API group."""
 
-    async def get_project_roles(self, project_id_or_key: str) -> None:
+    async def get_project_roles(self, project_id_or_key: str) -> dict[str, Any]:
         """Get project roles for project"""
         resp = await self._client._request("GET", f"/rest/api/3/project/{project_id_or_key}/role")
-        return None
+        return resp.json()
 
     async def get_project_role(
         self, project_id_or_key: str, id_: str, *, exclude_inactive_users: bool | None = None
@@ -141,7 +143,7 @@ class AsyncProjectRoles(AsyncAPIResource):
     async def delete_project_role(self, id_: str, *, swap: int | None = None) -> None:
         """Delete project role"""
         params = self._client._build_params(**{"swap": swap})
-        resp = await self._client._request("DELETE", f"/rest/api/3/role/{id_}", params=params)
+        await self._client._request("DELETE", f"/rest/api/3/role/{id_}", params=params)
         return None
 
     async def get_project_role_by_id(self, id_: str) -> ProjectRole:

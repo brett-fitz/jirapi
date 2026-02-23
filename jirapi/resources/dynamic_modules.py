@@ -12,7 +12,7 @@ class DynamicModules(SyncAPIResource):
     def remove_modules_delete(self, *, module_key: list[str] | None = None) -> None:
         """Remove modules"""
         params = self._client._build_params(**{"moduleKey": module_key})
-        resp = self._client._request(
+        self._client._request(
             "DELETE", "/rest/atlassian-connect/1/app/module/dynamic", params=params
         )
         return None
@@ -24,7 +24,7 @@ class DynamicModules(SyncAPIResource):
 
     def register_modules_post(self, body: ConnectModules) -> None:
         """Register modules"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             "/rest/atlassian-connect/1/app/module/dynamic",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -38,7 +38,7 @@ class AsyncDynamicModules(AsyncAPIResource):
     async def remove_modules_delete(self, *, module_key: list[str] | None = None) -> None:
         """Remove modules"""
         params = self._client._build_params(**{"moduleKey": module_key})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", "/rest/atlassian-connect/1/app/module/dynamic", params=params
         )
         return None
@@ -50,7 +50,7 @@ class AsyncDynamicModules(AsyncAPIResource):
 
     async def register_modules_post(self, body: ConnectModules) -> None:
         """Register modules"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             "/rest/atlassian-connect/1/app/module/dynamic",
             json=body.model_dump(by_alias=True, exclude_none=True),

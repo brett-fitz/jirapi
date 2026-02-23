@@ -128,16 +128,14 @@ class Dashboards(SyncAPIResource):
 
     def remove_gadget(self, dashboard_id: str, gadget_id: str) -> None:
         """Remove gadget from dashboard"""
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/dashboard/{dashboard_id}/gadget/{gadget_id}"
-        )
+        self._client._request("DELETE", f"/rest/api/3/dashboard/{dashboard_id}/gadget/{gadget_id}")
         return None
 
     def update_gadget(
         self, dashboard_id: str, gadget_id: str, body: DashboardGadgetUpdateRequest
     ) -> None:
         """Update gadget on dashboard"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/dashboard/{dashboard_id}/gadget/{gadget_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -155,7 +153,7 @@ class Dashboards(SyncAPIResource):
         self, dashboard_id: str, item_id: str, property_key: str
     ) -> None:
         """Delete dashboard item property"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/dashboard/{dashboard_id}/items/{item_id}/properties/{property_key}",
         )
@@ -174,14 +172,14 @@ class Dashboards(SyncAPIResource):
         self, dashboard_id: str, item_id: str, property_key: str
     ) -> None:
         """Set dashboard item property"""
-        resp = self._client._request(
+        self._client._request(
             "PUT", f"/rest/api/3/dashboard/{dashboard_id}/items/{item_id}/properties/{property_key}"
         )
         return None
 
     def delete_dashboard(self, id_: str) -> None:
         """Delete dashboard"""
-        resp = self._client._request("DELETE", f"/rest/api/3/dashboard/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/dashboard/{id_}")
         return None
 
     def get_dashboard(self, id_: str) -> Dashboard:
@@ -324,7 +322,7 @@ class AsyncDashboards(AsyncAPIResource):
 
     async def remove_gadget(self, dashboard_id: str, gadget_id: str) -> None:
         """Remove gadget from dashboard"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/dashboard/{dashboard_id}/gadget/{gadget_id}"
         )
         return None
@@ -333,7 +331,7 @@ class AsyncDashboards(AsyncAPIResource):
         self, dashboard_id: str, gadget_id: str, body: DashboardGadgetUpdateRequest
     ) -> None:
         """Update gadget on dashboard"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/dashboard/{dashboard_id}/gadget/{gadget_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -353,7 +351,7 @@ class AsyncDashboards(AsyncAPIResource):
         self, dashboard_id: str, item_id: str, property_key: str
     ) -> None:
         """Delete dashboard item property"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/dashboard/{dashboard_id}/items/{item_id}/properties/{property_key}",
         )
@@ -372,14 +370,14 @@ class AsyncDashboards(AsyncAPIResource):
         self, dashboard_id: str, item_id: str, property_key: str
     ) -> None:
         """Set dashboard item property"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/dashboard/{dashboard_id}/items/{item_id}/properties/{property_key}"
         )
         return None
 
     async def delete_dashboard(self, id_: str) -> None:
         """Delete dashboard"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/dashboard/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/dashboard/{id_}")
         return None
 
     async def get_dashboard(self, id_: str) -> Dashboard:

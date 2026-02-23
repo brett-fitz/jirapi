@@ -16,7 +16,7 @@ class IssueNavigatorSettings(SyncAPIResource):
 
     def set_issue_navigator_default_columns(self) -> None:
         """Set issue navigator default columns"""
-        resp = self._client._request("PUT", "/rest/api/3/settings/columns")
+        self._client._request("PUT", "/rest/api/3/settings/columns")
         return None
 
 
@@ -30,5 +30,5 @@ class AsyncIssueNavigatorSettings(AsyncAPIResource):
 
     async def set_issue_navigator_default_columns(self) -> None:
         """Set issue navigator default columns"""
-        resp = await self._client._request("PUT", "/rest/api/3/settings/columns")
+        await self._client._request("PUT", "/rest/api/3/settings/columns")
         return None

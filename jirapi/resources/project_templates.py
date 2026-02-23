@@ -19,7 +19,7 @@ class ProjectTemplates(SyncAPIResource):
         self, body: ProjectCustomTemplateCreateRequestDTO
     ) -> None:
         """Create custom project"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             "/rest/api/3/project-template",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -28,7 +28,7 @@ class ProjectTemplates(SyncAPIResource):
 
     def edit_template(self, body: EditTemplateRequest) -> None:
         """Edit a custom project template"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/project-template/edit-template",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -50,7 +50,7 @@ class ProjectTemplates(SyncAPIResource):
     def remove_template(self, *, template_key: str) -> None:
         """Deletes a custom project template"""
         params = self._client._build_params(**{"templateKey": template_key})
-        resp = self._client._request(
+        self._client._request(
             "DELETE", "/rest/api/3/project-template/remove-template", params=params
         )
         return None
@@ -72,7 +72,7 @@ class AsyncProjectTemplates(AsyncAPIResource):
         self, body: ProjectCustomTemplateCreateRequestDTO
     ) -> None:
         """Create custom project"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             "/rest/api/3/project-template",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -81,7 +81,7 @@ class AsyncProjectTemplates(AsyncAPIResource):
 
     async def edit_template(self, body: EditTemplateRequest) -> None:
         """Edit a custom project template"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/project-template/edit-template",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -103,7 +103,7 @@ class AsyncProjectTemplates(AsyncAPIResource):
     async def remove_template(self, *, template_key: str) -> None:
         """Deletes a custom project template"""
         params = self._client._build_params(**{"templateKey": template_key})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", "/rest/api/3/project-template/remove-template", params=params
         )
         return None

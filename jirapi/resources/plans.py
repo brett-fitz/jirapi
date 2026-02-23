@@ -34,7 +34,7 @@ class Plans(SyncAPIResource):
         resp = self._client._request("GET", "/rest/api/3/plans/plan", params=params)
         return PageWithCursorGetPlanResponseForPage.model_validate(resp.json())
 
-    def create_plan(self, body: CreatePlanRequest, *, use_group_id: bool | None = None) -> None:
+    def create_plan(self, body: CreatePlanRequest, *, use_group_id: bool | None = None) -> int:
         """Create plan"""
         params = self._client._build_params(**{"useGroupId": use_group_id})
         resp = self._client._request(
@@ -43,7 +43,7 @@ class Plans(SyncAPIResource):
             params=params,
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     def get_plan(self, plan_id: str, *, use_group_id: bool | None = None) -> GetPlanResponse:
         """Get plan"""
@@ -54,26 +54,26 @@ class Plans(SyncAPIResource):
     def update_plan(self, plan_id: str, *, use_group_id: bool | None = None) -> None:
         """Update plan"""
         params = self._client._build_params(**{"useGroupId": use_group_id})
-        resp = self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}", params=params)
+        self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}", params=params)
         return None
 
     def archive_plan(self, plan_id: str) -> None:
         """Archive plan"""
-        resp = self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/archive")
+        self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/archive")
         return None
 
-    def duplicate_plan(self, plan_id: str, body: DuplicatePlanRequest) -> None:
+    def duplicate_plan(self, plan_id: str, body: DuplicatePlanRequest) -> int:
         """Duplicate plan"""
         resp = self._client._request(
             "POST",
             f"/rest/api/3/plans/plan/{plan_id}/duplicate",
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     def trash_plan(self, plan_id: str) -> None:
         """Trash plan"""
-        resp = self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/trash")
+        self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/trash")
         return None
 
 
@@ -102,7 +102,7 @@ class AsyncPlans(AsyncAPIResource):
 
     async def create_plan(
         self, body: CreatePlanRequest, *, use_group_id: bool | None = None
-    ) -> None:
+    ) -> int:
         """Create plan"""
         params = self._client._build_params(**{"useGroupId": use_group_id})
         resp = await self._client._request(
@@ -111,7 +111,7 @@ class AsyncPlans(AsyncAPIResource):
             params=params,
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     async def get_plan(self, plan_id: str, *, use_group_id: bool | None = None) -> GetPlanResponse:
         """Get plan"""
@@ -124,26 +124,24 @@ class AsyncPlans(AsyncAPIResource):
     async def update_plan(self, plan_id: str, *, use_group_id: bool | None = None) -> None:
         """Update plan"""
         params = self._client._build_params(**{"useGroupId": use_group_id})
-        resp = await self._client._request(
-            "PUT", f"/rest/api/3/plans/plan/{plan_id}", params=params
-        )
+        await self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}", params=params)
         return None
 
     async def archive_plan(self, plan_id: str) -> None:
         """Archive plan"""
-        resp = await self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/archive")
+        await self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/archive")
         return None
 
-    async def duplicate_plan(self, plan_id: str, body: DuplicatePlanRequest) -> None:
+    async def duplicate_plan(self, plan_id: str, body: DuplicatePlanRequest) -> int:
         """Duplicate plan"""
         resp = await self._client._request(
             "POST",
             f"/rest/api/3/plans/plan/{plan_id}/duplicate",
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     async def trash_plan(self, plan_id: str) -> None:
         """Trash plan"""
-        resp = await self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/trash")
+        await self._client._request("PUT", f"/rest/api/3/plans/plan/{plan_id}/trash")
         return None

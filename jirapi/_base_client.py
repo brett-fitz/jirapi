@@ -13,9 +13,7 @@ import logging
 from typing import Any, Self
 
 import httpx
-from pydantic import BaseModel
 
-from jirapi._types import T
 from jirapi.exceptions import RateLimitError, exception_for_status
 
 
@@ -71,10 +69,12 @@ class _BaseClient:
 
         try:
             body = response.json()
-            error_messages = body.get("errorMessages", [])
-            errors = body.get("errors", {})
-        except Exception:  # noqa: BLE001
+        except (ValueError, UnicodeDecodeError):
             body = response.text
+        else:
+            if isinstance(body, dict):
+                error_messages = body.get("errorMessages", [])
+                errors = body.get("errors", {})
 
         message_parts = error_messages or [response.reason_phrase or "Unknown error"]
         message = f"[{status}] {'; '.join(message_parts)}"
@@ -97,14 +97,6 @@ class _BaseClient:
             kwargs["retry_after"] = retry_after
 
         raise exc_cls(message, **kwargs)
-
-    def _parse_response(self, response: httpx.Response, model: type[T]) -> T:
-        """Validate a successful JSON response into a Pydantic model."""
-        self._check_response(response)
-        data = response.json()
-        if isinstance(model, type) and issubclass(model, BaseModel):
-            return model.model_validate(data)  # type: ignore[return-value]
-        return data  # type: ignore[return-value]
 
     # --------------------------------------------------------------------- #
     # Parameter helpers

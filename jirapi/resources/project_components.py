@@ -46,7 +46,7 @@ class ProjectComponents(SyncAPIResource):
     def delete_component(self, id_: str, *, move_issues_to: str | None = None) -> None:
         """Delete component"""
         params = self._client._build_params(**{"moveIssuesTo": move_issues_to})
-        resp = self._client._request("DELETE", f"/rest/api/3/component/{id_}", params=params)
+        self._client._request("DELETE", f"/rest/api/3/component/{id_}", params=params)
         return None
 
     def get_component(self, id_: str) -> ProjectComponent:
@@ -139,7 +139,7 @@ class AsyncProjectComponents(AsyncAPIResource):
     async def delete_component(self, id_: str, *, move_issues_to: str | None = None) -> None:
         """Delete component"""
         params = self._client._build_params(**{"moveIssuesTo": move_issues_to})
-        resp = await self._client._request("DELETE", f"/rest/api/3/component/{id_}", params=params)
+        await self._client._request("DELETE", f"/rest/api/3/component/{id_}", params=params)
         return None
 
     async def get_component(self, id_: str) -> ProjectComponent:

@@ -57,7 +57,7 @@ class Workflows(SyncAPIResource):
 
     def delete_inactive_workflow(self, entity_id: str) -> None:
         """Delete inactive workflow"""
-        resp = self._client._request("DELETE", f"/rest/api/3/workflow/{entity_id}")
+        self._client._request("DELETE", f"/rest/api/3/workflow/{entity_id}")
         return None
 
     def get_workflow_project_issue_type_usages(
@@ -242,7 +242,7 @@ class AsyncWorkflows(AsyncAPIResource):
 
     async def delete_inactive_workflow(self, entity_id: str) -> None:
         """Delete inactive workflow"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/workflow/{entity_id}")
+        await self._client._request("DELETE", f"/rest/api/3/workflow/{entity_id}")
         return None
 
     async def get_workflow_project_issue_type_usages(

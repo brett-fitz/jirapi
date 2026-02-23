@@ -14,7 +14,12 @@
       "Bash(tail:*)",
       "Bash(grep:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr checks:*)"
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(python3:*)",
+      "Bash(gh api:*)",
+      "Base(task:*)"
     ],
     "deny": [
       "Bash(curl *)",
@@ -22,6 +27,9 @@
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(./secrets/**)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
     ]
   },
   "enabledPlugins": {

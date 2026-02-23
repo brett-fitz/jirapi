@@ -11,14 +11,14 @@ class ProjectClassificationLevels(SyncAPIResource):
 
     def remove_default_project_classification(self, project_id_or_key: str) -> None:
         """Remove the default data classification level from a project"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/classification-level/default"
         )
         return None
 
     def get_default_project_classification(self, project_id_or_key: str) -> None:
         """Get the default data classification level of a project"""
-        resp = self._client._request(
+        self._client._request(
             "GET", f"/rest/api/3/project/{project_id_or_key}/classification-level/default"
         )
         return None
@@ -27,7 +27,7 @@ class ProjectClassificationLevels(SyncAPIResource):
         self, project_id_or_key: str, body: UpdateDefaultProjectClassificationBean
     ) -> None:
         """Update the default data classification level of a project"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/project/{project_id_or_key}/classification-level/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -40,14 +40,14 @@ class AsyncProjectClassificationLevels(AsyncAPIResource):
 
     async def remove_default_project_classification(self, project_id_or_key: str) -> None:
         """Remove the default data classification level from a project"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/classification-level/default"
         )
         return None
 
     async def get_default_project_classification(self, project_id_or_key: str) -> None:
         """Get the default data classification level of a project"""
-        resp = await self._client._request(
+        await self._client._request(
             "GET", f"/rest/api/3/project/{project_id_or_key}/classification-level/default"
         )
         return None
@@ -56,7 +56,7 @@ class AsyncProjectClassificationLevels(AsyncAPIResource):
         self, project_id_or_key: str, body: UpdateDefaultProjectClassificationBean
     ) -> None:
         """Update the default data classification level of a project"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/project/{project_id_or_key}/classification-level/default",
             json=body.model_dump(by_alias=True, exclude_none=True),

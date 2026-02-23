@@ -21,7 +21,7 @@ class ScreenTabs(SyncAPIResource):
         params = self._client._build_params(
             **{"screenId": screen_id, "tabId": tab_id, "startAt": start_at, "maxResult": max_result}
         )
-        resp = self._client._request("GET", "/rest/api/3/screens/tabs", params=params)
+        self._client._request("GET", "/rest/api/3/screens/tabs", params=params)
         return None
 
     def get_all_screen_tabs(
@@ -43,7 +43,7 @@ class ScreenTabs(SyncAPIResource):
 
     def delete_screen_tab(self, screen_id: str, tab_id: str) -> None:
         """Delete screen tab"""
-        resp = self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}")
+        self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}")
         return None
 
     def rename_screen_tab(self, screen_id: str, tab_id: str, body: ScreenableTab) -> ScreenableTab:
@@ -57,9 +57,7 @@ class ScreenTabs(SyncAPIResource):
 
     def move_screen_tab(self, screen_id: str, tab_id: str, pos: str) -> None:
         """Move screen tab"""
-        resp = self._client._request(
-            "POST", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/move/{pos}"
-        )
+        self._client._request("POST", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/move/{pos}")
         return None
 
 
@@ -78,7 +76,7 @@ class AsyncScreenTabs(AsyncAPIResource):
         params = self._client._build_params(
             **{"screenId": screen_id, "tabId": tab_id, "startAt": start_at, "maxResult": max_result}
         )
-        resp = await self._client._request("GET", "/rest/api/3/screens/tabs", params=params)
+        await self._client._request("GET", "/rest/api/3/screens/tabs", params=params)
         return None
 
     async def get_all_screen_tabs(
@@ -102,9 +100,7 @@ class AsyncScreenTabs(AsyncAPIResource):
 
     async def delete_screen_tab(self, screen_id: str, tab_id: str) -> None:
         """Delete screen tab"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}")
         return None
 
     async def rename_screen_tab(
@@ -120,7 +116,7 @@ class AsyncScreenTabs(AsyncAPIResource):
 
     async def move_screen_tab(self, screen_id: str, tab_id: str, pos: str) -> None:
         """Move screen tab"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/move/{pos}"
         )
         return None

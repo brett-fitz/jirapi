@@ -81,7 +81,7 @@ class IssueFields(SyncAPIResource):
 
     def update_custom_field(self, field_id: str, body: UpdateCustomFieldDetails) -> None:
         """Update custom field"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -90,17 +90,17 @@ class IssueFields(SyncAPIResource):
 
     def delete_custom_field(self, id_: str) -> None:
         """Delete custom field"""
-        resp = self._client._request("DELETE", f"/rest/api/3/field/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/field/{id_}")
         return None
 
     def restore_custom_field(self, id_: str) -> None:
         """Restore custom field from trash"""
-        resp = self._client._request("POST", f"/rest/api/3/field/{id_}/restore")
+        self._client._request("POST", f"/rest/api/3/field/{id_}/restore")
         return None
 
     def trash_custom_field(self, id_: str) -> None:
         """Move custom field to trash"""
-        resp = self._client._request("POST", f"/rest/api/3/field/{id_}/trash")
+        self._client._request("POST", f"/rest/api/3/field/{id_}/trash")
         return None
 
     def get_project_fields(
@@ -195,7 +195,7 @@ class AsyncIssueFields(AsyncAPIResource):
 
     async def update_custom_field(self, field_id: str, body: UpdateCustomFieldDetails) -> None:
         """Update custom field"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -204,17 +204,17 @@ class AsyncIssueFields(AsyncAPIResource):
 
     async def delete_custom_field(self, id_: str) -> None:
         """Delete custom field"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/field/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/field/{id_}")
         return None
 
     async def restore_custom_field(self, id_: str) -> None:
         """Restore custom field from trash"""
-        resp = await self._client._request("POST", f"/rest/api/3/field/{id_}/restore")
+        await self._client._request("POST", f"/rest/api/3/field/{id_}/restore")
         return None
 
     async def trash_custom_field(self, id_: str) -> None:
         """Move custom field to trash"""
-        resp = await self._client._request("POST", f"/rest/api/3/field/{id_}/trash")
+        await self._client._request("POST", f"/rest/api/3/field/{id_}/trash")
         return None
 
     async def get_project_fields(

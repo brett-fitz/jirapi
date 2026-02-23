@@ -20,7 +20,7 @@ class ProjectRoleActors(SyncAPIResource):
     ) -> None:
         """Delete actors from project role"""
         params = self._client._build_params(**{"user": user, "group": group, "groupId": group_id})
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/role/{id_}", params=params
         )
         return None
@@ -87,7 +87,7 @@ class AsyncProjectRoleActors(AsyncAPIResource):
     ) -> None:
         """Delete actors from project role"""
         params = self._client._build_params(**{"user": user, "group": group, "groupId": group_id})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/project/{project_id_or_key}/role/{id_}", params=params
         )
         return None

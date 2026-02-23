@@ -20,7 +20,7 @@ class IssueWorklogProperties(SyncAPIResource):
         self, issue_id_or_key: str, worklog_id: str, property_key: str
     ) -> None:
         """Delete worklog property"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog/{worklog_id}/properties/{property_key}",
         )
@@ -40,7 +40,7 @@ class IssueWorklogProperties(SyncAPIResource):
         self, issue_id_or_key: str, worklog_id: str, property_key: str
     ) -> None:
         """Set worklog property"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog/{worklog_id}/properties/{property_key}",
         )
@@ -63,7 +63,7 @@ class AsyncIssueWorklogProperties(AsyncAPIResource):
         self, issue_id_or_key: str, worklog_id: str, property_key: str
     ) -> None:
         """Delete worklog property"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog/{worklog_id}/properties/{property_key}",
         )
@@ -83,7 +83,7 @@ class AsyncIssueWorklogProperties(AsyncAPIResource):
         self, issue_id_or_key: str, worklog_id: str, property_key: str
     ) -> None:
         """Set worklog property"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog/{worklog_id}/properties/{property_key}",
         )

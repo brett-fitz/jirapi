@@ -74,7 +74,7 @@ class IssueCustomFieldContexts(SyncAPIResource):
 
     def set_default_values(self, field_id: str, body: CustomFieldContextDefaultValueUpdate) -> None:
         """Set custom field contexts default values"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/defaultValue",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -135,14 +135,14 @@ class IssueCustomFieldContexts(SyncAPIResource):
 
     def delete_custom_field_context(self, field_id: str, context_id: str) -> None:
         """Delete custom field context"""
-        resp = self._client._request("DELETE", f"/rest/api/3/field/{field_id}/context/{context_id}")
+        self._client._request("DELETE", f"/rest/api/3/field/{field_id}/context/{context_id}")
         return None
 
     def update_custom_field_context(
         self, field_id: str, context_id: str, body: CustomFieldContextUpdateDetails
     ) -> None:
         """Update custom field context"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -153,7 +153,7 @@ class IssueCustomFieldContexts(SyncAPIResource):
         self, field_id: str, context_id: str, body: IssueTypeIds
     ) -> None:
         """Add issue types to context"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}/issuetype",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -164,7 +164,7 @@ class IssueCustomFieldContexts(SyncAPIResource):
         self, field_id: str, context_id: str, body: IssueTypeIds
     ) -> None:
         """Remove issue types from context"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/field/{field_id}/context/{context_id}/issuetype/remove",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -175,7 +175,7 @@ class IssueCustomFieldContexts(SyncAPIResource):
         self, field_id: str, context_id: str, body: ProjectIds
     ) -> None:
         """Assign custom field context to projects"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -186,7 +186,7 @@ class IssueCustomFieldContexts(SyncAPIResource):
         self, field_id: str, context_id: str, body: ProjectIds
     ) -> None:
         """Remove custom field context from projects"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/field/{field_id}/context/{context_id}/project/remove",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -254,7 +254,7 @@ class AsyncIssueCustomFieldContexts(AsyncAPIResource):
         self, field_id: str, body: CustomFieldContextDefaultValueUpdate
     ) -> None:
         """Set custom field contexts default values"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/defaultValue",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -315,16 +315,14 @@ class AsyncIssueCustomFieldContexts(AsyncAPIResource):
 
     async def delete_custom_field_context(self, field_id: str, context_id: str) -> None:
         """Delete custom field context"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/field/{field_id}/context/{context_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/field/{field_id}/context/{context_id}")
         return None
 
     async def update_custom_field_context(
         self, field_id: str, context_id: str, body: CustomFieldContextUpdateDetails
     ) -> None:
         """Update custom field context"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -335,7 +333,7 @@ class AsyncIssueCustomFieldContexts(AsyncAPIResource):
         self, field_id: str, context_id: str, body: IssueTypeIds
     ) -> None:
         """Add issue types to context"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}/issuetype",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -346,7 +344,7 @@ class AsyncIssueCustomFieldContexts(AsyncAPIResource):
         self, field_id: str, context_id: str, body: IssueTypeIds
     ) -> None:
         """Remove issue types from context"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/field/{field_id}/context/{context_id}/issuetype/remove",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -357,7 +355,7 @@ class AsyncIssueCustomFieldContexts(AsyncAPIResource):
         self, field_id: str, context_id: str, body: ProjectIds
     ) -> None:
         """Assign custom field context to projects"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -368,7 +366,7 @@ class AsyncIssueCustomFieldContexts(AsyncAPIResource):
         self, field_id: str, context_id: str, body: ProjectIds
     ) -> None:
         """Remove custom field context from projects"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/field/{field_id}/context/{context_id}/project/remove",
             json=body.model_dump(by_alias=True, exclude_none=True),

@@ -17,7 +17,7 @@ class IssueCustomFieldValuesApps(SyncAPIResource):
     ) -> None:
         """Update custom fields"""
         params = self._client._build_params(**{"generateChangelog": generate_changelog})
-        resp = self._client._request(
+        self._client._request(
             "POST",
             "/rest/api/3/app/field/value",
             params=params,
@@ -34,7 +34,7 @@ class IssueCustomFieldValuesApps(SyncAPIResource):
     ) -> None:
         """Update custom field value"""
         params = self._client._build_params(**{"generateChangelog": generate_changelog})
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/app/field/{field_id_or_key}/value",
             params=params,
@@ -54,7 +54,7 @@ class AsyncIssueCustomFieldValuesApps(AsyncAPIResource):
     ) -> None:
         """Update custom fields"""
         params = self._client._build_params(**{"generateChangelog": generate_changelog})
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             "/rest/api/3/app/field/value",
             params=params,
@@ -71,7 +71,7 @@ class AsyncIssueCustomFieldValuesApps(AsyncAPIResource):
     ) -> None:
         """Update custom field value"""
         params = self._client._build_params(**{"generateChangelog": generate_changelog})
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/app/field/{field_id_or_key}/value",
             params=params,

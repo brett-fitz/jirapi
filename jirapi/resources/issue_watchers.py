@@ -23,7 +23,7 @@ class IssueWatchers(SyncAPIResource):
     ) -> None:
         """Delete watcher"""
         params = self._client._build_params(**{"username": username, "accountId": account_id})
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/issue/{issue_id_or_key}/watchers", params=params
         )
         return None
@@ -35,7 +35,7 @@ class IssueWatchers(SyncAPIResource):
 
     def add_watcher(self, issue_id_or_key: str) -> None:
         """Add watcher"""
-        resp = self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/watchers")
+        self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/watchers")
         return None
 
 
@@ -56,7 +56,7 @@ class AsyncIssueWatchers(AsyncAPIResource):
     ) -> None:
         """Delete watcher"""
         params = self._client._build_params(**{"username": username, "accountId": account_id})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/issue/{issue_id_or_key}/watchers", params=params
         )
         return None
@@ -68,5 +68,5 @@ class AsyncIssueWatchers(AsyncAPIResource):
 
     async def add_watcher(self, issue_id_or_key: str) -> None:
         """Add watcher"""
-        resp = await self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/watchers")
+        await self._client._request("POST", f"/rest/api/3/issue/{issue_id_or_key}/watchers")
         return None

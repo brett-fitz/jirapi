@@ -11,14 +11,14 @@ class IssueLinks(SyncAPIResource):
 
     def link_issues(self, body: LinkIssueRequestJsonBean) -> None:
         """Create issue link"""
-        resp = self._client._request(
+        self._client._request(
             "POST", "/rest/api/3/issueLink", json=body.model_dump(by_alias=True, exclude_none=True)
         )
         return None
 
     def delete_issue_link(self, link_id: str) -> None:
         """Delete issue link"""
-        resp = self._client._request("DELETE", f"/rest/api/3/issueLink/{link_id}")
+        self._client._request("DELETE", f"/rest/api/3/issueLink/{link_id}")
         return None
 
     def get_issue_link(self, link_id: str) -> IssueLink:
@@ -32,14 +32,14 @@ class AsyncIssueLinks(AsyncAPIResource):
 
     async def link_issues(self, body: LinkIssueRequestJsonBean) -> None:
         """Create issue link"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST", "/rest/api/3/issueLink", json=body.model_dump(by_alias=True, exclude_none=True)
         )
         return None
 
     async def delete_issue_link(self, link_id: str) -> None:
         """Delete issue link"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/issueLink/{link_id}")
+        await self._client._request("DELETE", f"/rest/api/3/issueLink/{link_id}")
         return None
 
     async def get_issue_link(self, link_id: str) -> IssueLink:

@@ -35,7 +35,7 @@ class UserProperties(SyncAPIResource):
         params = self._client._build_params(
             **{"accountId": account_id, "userKey": user_key, "username": username}
         )
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/user/properties/{property_key}", params=params
         )
         return None
@@ -69,9 +69,7 @@ class UserProperties(SyncAPIResource):
         params = self._client._build_params(
             **{"accountId": account_id, "userKey": user_key, "username": username}
         )
-        resp = self._client._request(
-            "PUT", f"/rest/api/3/user/properties/{property_key}", params=params
-        )
+        self._client._request("PUT", f"/rest/api/3/user/properties/{property_key}", params=params)
         return None
 
 
@@ -104,7 +102,7 @@ class AsyncUserProperties(AsyncAPIResource):
         params = self._client._build_params(
             **{"accountId": account_id, "userKey": user_key, "username": username}
         )
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/user/properties/{property_key}", params=params
         )
         return None
@@ -138,7 +136,7 @@ class AsyncUserProperties(AsyncAPIResource):
         params = self._client._build_params(
             **{"accountId": account_id, "userKey": user_key, "username": username}
         )
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/user/properties/{property_key}", params=params
         )
         return None

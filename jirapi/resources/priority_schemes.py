@@ -92,7 +92,7 @@ class PrioritySchemes(SyncAPIResource):
 
     def delete_priority_scheme(self, scheme_id: str) -> None:
         """Delete priority scheme"""
-        resp = self._client._request("DELETE", f"/rest/api/3/priorityscheme/{scheme_id}")
+        self._client._request("DELETE", f"/rest/api/3/priorityscheme/{scheme_id}")
         return None
 
     def update_priority_scheme(
@@ -217,7 +217,7 @@ class AsyncPrioritySchemes(AsyncAPIResource):
 
     async def delete_priority_scheme(self, scheme_id: str) -> None:
         """Delete priority scheme"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/priorityscheme/{scheme_id}")
+        await self._client._request("DELETE", f"/rest/api/3/priorityscheme/{scheme_id}")
         return None
 
     async def update_priority_scheme(

@@ -32,7 +32,7 @@ class ScreenTabFields(SyncAPIResource):
 
     def remove_screen_tab_field(self, screen_id: str, tab_id: str, id_: str) -> None:
         """Remove screen tab field"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/fields/{id_}"
         )
         return None
@@ -41,7 +41,7 @@ class ScreenTabFields(SyncAPIResource):
         self, screen_id: str, tab_id: str, id_: str, body: MoveFieldBean
     ) -> None:
         """Move screen tab field"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/fields/{id_}/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -75,7 +75,7 @@ class AsyncScreenTabFields(AsyncAPIResource):
 
     async def remove_screen_tab_field(self, screen_id: str, tab_id: str, id_: str) -> None:
         """Remove screen tab field"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/fields/{id_}"
         )
         return None
@@ -84,7 +84,7 @@ class AsyncScreenTabFields(AsyncAPIResource):
         self, screen_id: str, tab_id: str, id_: str, body: MoveFieldBean
     ) -> None:
         """Move screen tab field"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/screens/{screen_id}/tabs/{tab_id}/fields/{id_}/move",
             json=body.model_dump(by_alias=True, exclude_none=True),

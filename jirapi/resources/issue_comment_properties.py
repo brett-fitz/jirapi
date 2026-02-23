@@ -16,7 +16,7 @@ class IssueCommentProperties(SyncAPIResource):
 
     def delete_comment_property(self, comment_id: str, property_key: str) -> None:
         """Delete comment property"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/comment/{comment_id}/properties/{property_key}"
         )
         return None
@@ -30,9 +30,7 @@ class IssueCommentProperties(SyncAPIResource):
 
     def set_comment_property(self, comment_id: str, property_key: str) -> None:
         """Set comment property"""
-        resp = self._client._request(
-            "PUT", f"/rest/api/3/comment/{comment_id}/properties/{property_key}"
-        )
+        self._client._request("PUT", f"/rest/api/3/comment/{comment_id}/properties/{property_key}")
         return None
 
 
@@ -46,7 +44,7 @@ class AsyncIssueCommentProperties(AsyncAPIResource):
 
     async def delete_comment_property(self, comment_id: str, property_key: str) -> None:
         """Delete comment property"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/comment/{comment_id}/properties/{property_key}"
         )
         return None
@@ -60,7 +58,7 @@ class AsyncIssueCommentProperties(AsyncAPIResource):
 
     async def set_comment_property(self, comment_id: str, property_key: str) -> None:
         """Set comment property"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/comment/{comment_id}/properties/{property_key}"
         )
         return None

@@ -90,7 +90,7 @@ class Filters(SyncAPIResource):
 
     def delete_filter(self, id_: str) -> None:
         """Delete filter"""
-        resp = self._client._request("DELETE", f"/rest/api/3/filter/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/filter/{id_}")
         return None
 
     def get_filter(
@@ -125,7 +125,7 @@ class Filters(SyncAPIResource):
 
     def reset_columns(self, id_: str) -> None:
         """Reset columns"""
-        resp = self._client._request("DELETE", f"/rest/api/3/filter/{id_}/columns")
+        self._client._request("DELETE", f"/rest/api/3/filter/{id_}/columns")
         return None
 
     def get_columns(self, id_: str) -> ColumnItem:
@@ -135,7 +135,7 @@ class Filters(SyncAPIResource):
 
     def set_columns(self, id_: str, body: ColumnRequestBody) -> None:
         """Set columns"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/filter/{id_}/columns",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -156,7 +156,7 @@ class Filters(SyncAPIResource):
 
     def change_filter_owner(self, id_: str, body: ChangeFilterOwner) -> None:
         """Change filter owner"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/filter/{id_}/owner",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -242,7 +242,7 @@ class AsyncFilters(AsyncAPIResource):
 
     async def delete_filter(self, id_: str) -> None:
         """Delete filter"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/filter/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/filter/{id_}")
         return None
 
     async def get_filter(
@@ -277,7 +277,7 @@ class AsyncFilters(AsyncAPIResource):
 
     async def reset_columns(self, id_: str) -> None:
         """Reset columns"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/filter/{id_}/columns")
+        await self._client._request("DELETE", f"/rest/api/3/filter/{id_}/columns")
         return None
 
     async def get_columns(self, id_: str) -> ColumnItem:
@@ -287,7 +287,7 @@ class AsyncFilters(AsyncAPIResource):
 
     async def set_columns(self, id_: str, body: ColumnRequestBody) -> None:
         """Set columns"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/filter/{id_}/columns",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -312,7 +312,7 @@ class AsyncFilters(AsyncAPIResource):
 
     async def change_filter_owner(self, id_: str, body: ChangeFilterOwner) -> None:
         """Change filter owner"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/filter/{id_}/owner",
             json=body.model_dump(by_alias=True, exclude_none=True),

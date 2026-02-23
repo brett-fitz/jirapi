@@ -41,14 +41,14 @@ class UiModificationsApps(SyncAPIResource):
 
     def delete_ui_modification(self, ui_modification_id: str) -> None:
         """Delete UI modification"""
-        resp = self._client._request("DELETE", f"/rest/api/3/uiModifications/{ui_modification_id}")
+        self._client._request("DELETE", f"/rest/api/3/uiModifications/{ui_modification_id}")
         return None
 
     def update_ui_modification(
         self, ui_modification_id: str, body: UpdateUiModificationDetails
     ) -> None:
         """Update UI modification"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/uiModifications/{ui_modification_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -86,16 +86,14 @@ class AsyncUiModificationsApps(AsyncAPIResource):
 
     async def delete_ui_modification(self, ui_modification_id: str) -> None:
         """Delete UI modification"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/uiModifications/{ui_modification_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/uiModifications/{ui_modification_id}")
         return None
 
     async def update_ui_modification(
         self, ui_modification_id: str, body: UpdateUiModificationDetails
     ) -> None:
         """Update UI modification"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/uiModifications/{ui_modification_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),

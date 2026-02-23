@@ -18,7 +18,7 @@ class Webhooks(SyncAPIResource):
 
     def delete_webhook_by_id(self, body: ContainerForWebhookIDs) -> None:
         """Delete webhooks by ID"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", "/rest/api/3/webhook", json=body.model_dump(by_alias=True, exclude_none=True)
         )
         return None
@@ -63,7 +63,7 @@ class AsyncWebhooks(AsyncAPIResource):
 
     async def delete_webhook_by_id(self, body: ContainerForWebhookIDs) -> None:
         """Delete webhooks by ID"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", "/rest/api/3/webhook", json=body.model_dump(by_alias=True, exclude_none=True)
         )
         return None

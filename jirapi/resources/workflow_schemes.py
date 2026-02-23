@@ -41,7 +41,7 @@ class WorkflowSchemes(SyncAPIResource):
 
     def switch_workflow_scheme_for_project(self, body: WorkflowSchemeProjectSwitchBean) -> None:
         """Switch workflow scheme for project"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             "/rest/api/3/workflowscheme/project/switch",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -59,7 +59,7 @@ class WorkflowSchemes(SyncAPIResource):
 
     def update_schemes(self, body: WorkflowSchemeUpdateRequest) -> None:
         """Update workflow scheme"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             "/rest/api/3/workflowscheme/update",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -79,7 +79,7 @@ class WorkflowSchemes(SyncAPIResource):
 
     def delete_workflow_scheme(self, id_: str) -> None:
         """Delete workflow scheme"""
-        resp = self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}")
         return None
 
     def get_workflow_scheme(
@@ -166,9 +166,7 @@ class WorkflowSchemes(SyncAPIResource):
         params = self._client._build_params(
             **{"workflowName": workflow_name, "updateDraftIfNeeded": update_draft_if_needed}
         )
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/workflowscheme/{id_}/workflow", params=params
-        )
+        self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}/workflow", params=params)
         return None
 
     def get_workflow(
@@ -241,7 +239,7 @@ class AsyncWorkflowSchemes(AsyncAPIResource):
         self, body: WorkflowSchemeProjectSwitchBean
     ) -> None:
         """Switch workflow scheme for project"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             "/rest/api/3/workflowscheme/project/switch",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -261,7 +259,7 @@ class AsyncWorkflowSchemes(AsyncAPIResource):
 
     async def update_schemes(self, body: WorkflowSchemeUpdateRequest) -> None:
         """Update workflow scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             "/rest/api/3/workflowscheme/update",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -281,7 +279,7 @@ class AsyncWorkflowSchemes(AsyncAPIResource):
 
     async def delete_workflow_scheme(self, id_: str) -> None:
         """Delete workflow scheme"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/workflowscheme/{id_}")
         return None
 
     async def get_workflow_scheme(
@@ -370,7 +368,7 @@ class AsyncWorkflowSchemes(AsyncAPIResource):
         params = self._client._build_params(
             **{"workflowName": workflow_name, "updateDraftIfNeeded": update_draft_if_needed}
         )
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/workflowscheme/{id_}/workflow", params=params
         )
         return None

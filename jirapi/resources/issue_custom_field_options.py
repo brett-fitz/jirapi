@@ -72,7 +72,7 @@ class IssueCustomFieldOptions(SyncAPIResource):
         self, field_id: str, context_id: str, body: OrderOfCustomFieldOptions
     ) -> None:
         """Reorder custom field options (context)"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}/option/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -81,7 +81,7 @@ class IssueCustomFieldOptions(SyncAPIResource):
 
     def delete_custom_field_option(self, field_id: str, context_id: str, option_id: str) -> None:
         """Delete custom field options (context)"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/field/{field_id}/context/{context_id}/option/{option_id}"
         )
         return None
@@ -97,7 +97,7 @@ class IssueCustomFieldOptions(SyncAPIResource):
     ) -> None:
         """Replace custom field options"""
         params = self._client._build_params(**{"replaceWith": replace_with, "jql": jql})
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/field/{field_id}/context/{context_id}/option/{option_id}/issue",
             params=params,
@@ -163,7 +163,7 @@ class AsyncIssueCustomFieldOptions(AsyncAPIResource):
         self, field_id: str, context_id: str, body: OrderOfCustomFieldOptions
     ) -> None:
         """Reorder custom field options (context)"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/field/{field_id}/context/{context_id}/option/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -174,7 +174,7 @@ class AsyncIssueCustomFieldOptions(AsyncAPIResource):
         self, field_id: str, context_id: str, option_id: str
     ) -> None:
         """Delete custom field options (context)"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/field/{field_id}/context/{context_id}/option/{option_id}"
         )
         return None
@@ -190,7 +190,7 @@ class AsyncIssueCustomFieldOptions(AsyncAPIResource):
     ) -> None:
         """Replace custom field options"""
         params = self._client._build_params(**{"replaceWith": replace_with, "jql": jql})
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/field/{field_id}/context/{context_id}/option/{option_id}/issue",
             params=params,

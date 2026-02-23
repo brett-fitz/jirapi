@@ -10,7 +10,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
-from jirapi._base_client import AsyncAPIClient, SyncAPIClient
+from jirapi._base_client import _DEFAULT_TIMEOUT, AsyncAPIClient, SyncAPIClient
 
 
 if TYPE_CHECKING:
@@ -200,7 +200,7 @@ class Jira(SyncAPIClient):
         url: str,
         email: str,
         api_token: str,
-        timeout: float = 30.0,
+        timeout: float = _DEFAULT_TIMEOUT,
         **httpx_client_kwargs: Any,
     ) -> None:
         super().__init__(
@@ -819,7 +819,7 @@ class AsyncJira(AsyncAPIClient):
         url: str,
         email: str,
         api_token: str,
-        timeout: float = 30.0,
+        timeout: float = _DEFAULT_TIMEOUT,
         **httpx_client_kwargs: Any,
     ) -> None:
         super().__init__(

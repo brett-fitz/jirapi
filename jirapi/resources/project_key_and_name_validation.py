@@ -15,21 +15,21 @@ class ProjectKeyAndNameValidation(SyncAPIResource):
         resp = self._client._request("GET", "/rest/api/3/projectvalidate/key", params=params)
         return ErrorCollection.model_validate(resp.json())
 
-    def get_valid_project_key(self, *, key: str | None = None) -> None:
+    def get_valid_project_key(self, *, key: str | None = None) -> str:
         """Get valid project key"""
         params = self._client._build_params(**{"key": key})
         resp = self._client._request(
             "GET", "/rest/api/3/projectvalidate/validProjectKey", params=params
         )
-        return None
+        return resp.json()
 
-    def get_valid_project_name(self, *, name: str) -> None:
+    def get_valid_project_name(self, *, name: str) -> str:
         """Get valid project name"""
         params = self._client._build_params(**{"name": name})
         resp = self._client._request(
             "GET", "/rest/api/3/projectvalidate/validProjectName", params=params
         )
-        return None
+        return resp.json()
 
 
 class AsyncProjectKeyAndNameValidation(AsyncAPIResource):
@@ -41,18 +41,18 @@ class AsyncProjectKeyAndNameValidation(AsyncAPIResource):
         resp = await self._client._request("GET", "/rest/api/3/projectvalidate/key", params=params)
         return ErrorCollection.model_validate(resp.json())
 
-    async def get_valid_project_key(self, *, key: str | None = None) -> None:
+    async def get_valid_project_key(self, *, key: str | None = None) -> str:
         """Get valid project key"""
         params = self._client._build_params(**{"key": key})
         resp = await self._client._request(
             "GET", "/rest/api/3/projectvalidate/validProjectKey", params=params
         )
-        return None
+        return resp.json()
 
-    async def get_valid_project_name(self, *, name: str) -> None:
+    async def get_valid_project_name(self, *, name: str) -> str:
         """Get valid project name"""
         params = self._client._build_params(**{"name": name})
         resp = await self._client._request(
             "GET", "/rest/api/3/projectvalidate/validProjectName", params=params
         )
-        return None
+        return resp.json()

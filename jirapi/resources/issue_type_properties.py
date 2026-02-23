@@ -16,7 +16,7 @@ class IssueTypeProperties(SyncAPIResource):
 
     def delete_issue_type_property(self, issue_type_id: str, property_key: str) -> None:
         """Delete issue type property"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/issuetype/{issue_type_id}/properties/{property_key}"
         )
         return None
@@ -30,7 +30,7 @@ class IssueTypeProperties(SyncAPIResource):
 
     def set_issue_type_property(self, issue_type_id: str, property_key: str) -> None:
         """Set issue type property"""
-        resp = self._client._request(
+        self._client._request(
             "PUT", f"/rest/api/3/issuetype/{issue_type_id}/properties/{property_key}"
         )
         return None
@@ -48,7 +48,7 @@ class AsyncIssueTypeProperties(AsyncAPIResource):
 
     async def delete_issue_type_property(self, issue_type_id: str, property_key: str) -> None:
         """Delete issue type property"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/issuetype/{issue_type_id}/properties/{property_key}"
         )
         return None
@@ -64,7 +64,7 @@ class AsyncIssueTypeProperties(AsyncAPIResource):
 
     async def set_issue_type_property(self, issue_type_id: str, property_key: str) -> None:
         """Set issue type property"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT", f"/rest/api/3/issuetype/{issue_type_id}/properties/{property_key}"
         )
         return None

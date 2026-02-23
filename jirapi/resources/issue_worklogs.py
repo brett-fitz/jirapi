@@ -27,7 +27,7 @@ class IssueWorklogs(SyncAPIResource):
         params = self._client._build_params(
             **{"adjustEstimate": adjust_estimate, "overrideEditableFlag": override_editable_flag}
         )
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog",
             params=params,
@@ -103,7 +103,7 @@ class IssueWorklogs(SyncAPIResource):
         params = self._client._build_params(
             **{"adjustEstimate": adjust_estimate, "overrideEditableFlag": override_editable_flag}
         )
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog/move",
             params=params,
@@ -132,7 +132,7 @@ class IssueWorklogs(SyncAPIResource):
                 "overrideEditableFlag": override_editable_flag,
             }
         )
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/issue/{issue_id_or_key}/worklog/{id_}", params=params
         )
         return None
@@ -218,7 +218,7 @@ class AsyncIssueWorklogs(AsyncAPIResource):
         params = self._client._build_params(
             **{"adjustEstimate": adjust_estimate, "overrideEditableFlag": override_editable_flag}
         )
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog",
             params=params,
@@ -294,7 +294,7 @@ class AsyncIssueWorklogs(AsyncAPIResource):
         params = self._client._build_params(
             **{"adjustEstimate": adjust_estimate, "overrideEditableFlag": override_editable_flag}
         )
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/issue/{issue_id_or_key}/worklog/move",
             params=params,
@@ -323,7 +323,7 @@ class AsyncIssueWorklogs(AsyncAPIResource):
                 "overrideEditableFlag": override_editable_flag,
             }
         )
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/issue/{issue_id_or_key}/worklog/{id_}", params=params
         )
         return None

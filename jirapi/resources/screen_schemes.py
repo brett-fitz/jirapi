@@ -49,12 +49,12 @@ class ScreenSchemes(SyncAPIResource):
 
     def delete_screen_scheme(self, screen_scheme_id: str) -> None:
         """Delete screen scheme"""
-        resp = self._client._request("DELETE", f"/rest/api/3/screenscheme/{screen_scheme_id}")
+        self._client._request("DELETE", f"/rest/api/3/screenscheme/{screen_scheme_id}")
         return None
 
     def update_screen_scheme(self, screen_scheme_id: str, body: UpdateScreenSchemeDetails) -> None:
         """Update screen scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/screenscheme/{screen_scheme_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -100,14 +100,14 @@ class AsyncScreenSchemes(AsyncAPIResource):
 
     async def delete_screen_scheme(self, screen_scheme_id: str) -> None:
         """Delete screen scheme"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/screenscheme/{screen_scheme_id}")
+        await self._client._request("DELETE", f"/rest/api/3/screenscheme/{screen_scheme_id}")
         return None
 
     async def update_screen_scheme(
         self, screen_scheme_id: str, body: UpdateScreenSchemeDetails
     ) -> None:
         """Update screen scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/screenscheme/{screen_scheme_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),

@@ -16,7 +16,7 @@ class AppMigration(SyncAPIResource):
 
     def update_issue_fields_put(self, body: ConnectCustomFieldValues) -> None:
         """Bulk update custom field value"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/atlassian-connect/1/migration/field",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -27,7 +27,7 @@ class AppMigration(SyncAPIResource):
         self, entity_type: str, body: EntityPropertyDetails
     ) -> None:
         """Bulk update entity properties"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/atlassian-connect/1/migration/properties/{entity_type}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -49,7 +49,7 @@ class AsyncAppMigration(AsyncAPIResource):
 
     async def update_issue_fields_put(self, body: ConnectCustomFieldValues) -> None:
         """Bulk update custom field value"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/atlassian-connect/1/migration/field",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -60,7 +60,7 @@ class AsyncAppMigration(AsyncAPIResource):
         self, entity_type: str, body: EntityPropertyDetails
     ) -> None:
         """Bulk update entity properties"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/atlassian-connect/1/migration/properties/{entity_type}",
             json=body.model_dump(by_alias=True, exclude_none=True),

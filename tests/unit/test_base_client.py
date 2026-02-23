@@ -122,6 +122,30 @@ class TestSyncRequestErrorHandling:
         client.close()
 
     @respx.mock(base_url=BASE_URL)
+    def test_non_dict_json_error_response(self, respx_mock: respx.MockRouter) -> None:
+        respx_mock.get("/rest/api/3/test").mock(
+            return_value=httpx.Response(400, json=[{"id": 1}, {"id": 2}])
+        )
+        client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
+        with pytest.raises(ValidationError) as exc_info:
+            client._request("GET", "/rest/api/3/test")
+        assert exc_info.value.status_code == 400
+        assert exc_info.value.response_body == [{"id": 1}, {"id": 2}]
+        client.close()
+
+    @respx.mock(base_url=BASE_URL)
+    def test_non_json_error_response(self, respx_mock: respx.MockRouter) -> None:
+        respx_mock.get("/rest/api/3/test").mock(
+            return_value=httpx.Response(502, text="<html>Bad Gateway</html>")
+        )
+        client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
+        with pytest.raises(ServerError) as exc_info:
+            client._request("GET", "/rest/api/3/test")
+        assert exc_info.value.status_code == 502
+        assert exc_info.value.response_body == "<html>Bad Gateway</html>"
+        client.close()
+
+    @respx.mock(base_url=BASE_URL)
     def test_200_does_not_raise(self, respx_mock: respx.MockRouter) -> None:
         respx_mock.get("/rest/api/3/test").mock(return_value=httpx.Response(200, json={"ok": True}))
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")

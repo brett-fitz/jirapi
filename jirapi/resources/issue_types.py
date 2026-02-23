@@ -32,7 +32,7 @@ class IssueTypes(SyncAPIResource):
     def delete_issue_type(self, id_: str, *, alternative_issue_type_id: str | None = None) -> None:
         """Delete issue type"""
         params = self._client._build_params(**{"alternativeIssueTypeId": alternative_issue_type_id})
-        resp = self._client._request("DELETE", f"/rest/api/3/issuetype/{id_}", params=params)
+        self._client._request("DELETE", f"/rest/api/3/issuetype/{id_}", params=params)
         return None
 
     def get_issue_type(self, id_: str) -> IssueTypeDetails:
@@ -91,7 +91,7 @@ class AsyncIssueTypes(AsyncAPIResource):
     ) -> None:
         """Delete issue type"""
         params = self._client._build_params(**{"alternativeIssueTypeId": alternative_issue_type_id})
-        resp = await self._client._request("DELETE", f"/rest/api/3/issuetype/{id_}", params=params)
+        await self._client._request("DELETE", f"/rest/api/3/issuetype/{id_}", params=params)
         return None
 
     async def get_issue_type(self, id_: str) -> IssueTypeDetails:

@@ -18,7 +18,7 @@ class IssueAttachments(SyncAPIResource):
     def get_attachment_content(self, id_: str, *, redirect: bool | None = None) -> None:
         """Get attachment content"""
         params = self._client._build_params(**{"redirect": redirect})
-        resp = self._client._request("GET", f"/rest/api/3/attachment/content/{id_}", params=params)
+        self._client._request("GET", f"/rest/api/3/attachment/content/{id_}", params=params)
         return None
 
     def get_attachment_meta(self) -> AttachmentSettings:
@@ -44,14 +44,12 @@ class IssueAttachments(SyncAPIResource):
                 "height": height,
             }
         )
-        resp = self._client._request(
-            "GET", f"/rest/api/3/attachment/thumbnail/{id_}", params=params
-        )
+        self._client._request("GET", f"/rest/api/3/attachment/thumbnail/{id_}", params=params)
         return None
 
     def remove_attachment(self, id_: str) -> None:
         """Delete attachment"""
-        resp = self._client._request("DELETE", f"/rest/api/3/attachment/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/attachment/{id_}")
         return None
 
     def get_attachment(self, id_: str) -> AttachmentMetadata:
@@ -81,9 +79,7 @@ class AsyncIssueAttachments(AsyncAPIResource):
     async def get_attachment_content(self, id_: str, *, redirect: bool | None = None) -> None:
         """Get attachment content"""
         params = self._client._build_params(**{"redirect": redirect})
-        resp = await self._client._request(
-            "GET", f"/rest/api/3/attachment/content/{id_}", params=params
-        )
+        await self._client._request("GET", f"/rest/api/3/attachment/content/{id_}", params=params)
         return None
 
     async def get_attachment_meta(self) -> AttachmentSettings:
@@ -109,14 +105,12 @@ class AsyncIssueAttachments(AsyncAPIResource):
                 "height": height,
             }
         )
-        resp = await self._client._request(
-            "GET", f"/rest/api/3/attachment/thumbnail/{id_}", params=params
-        )
+        await self._client._request("GET", f"/rest/api/3/attachment/thumbnail/{id_}", params=params)
         return None
 
     async def remove_attachment(self, id_: str) -> None:
         """Delete attachment"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/attachment/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/attachment/{id_}")
         return None
 
     async def get_attachment(self, id_: str) -> AttachmentMetadata:

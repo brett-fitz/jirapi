@@ -56,7 +56,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.11", "3.12", "3.13"]
+        python: ["3.11", "3.12", "3.13", "3.14"]
     permissions:
       pull-requests: write
       contents: write
@@ -90,7 +90,7 @@ jobs:
           uv run coverage report
 
       - name: Coverage comment
-        if: ${{ matrix.python == '3.13' && github.event_name == 'pull_request' }}
+        if: ${{ matrix.python == '3.14' && github.event_name == 'pull_request' }}
         uses: py-cov-action/python-coverage-comment-action@v3
         with:
           GITHUB_TOKEN: ${{ github.token }}

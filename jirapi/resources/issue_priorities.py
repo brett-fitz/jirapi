@@ -11,7 +11,7 @@ class IssuePriorities(SyncAPIResource):
 
     def set_default_priority(self, body: SetDefaultPriorityRequest) -> None:
         """Set default priority"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/priority/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -20,7 +20,7 @@ class IssuePriorities(SyncAPIResource):
 
     def move_priorities(self, body: ReorderIssuePriorities) -> None:
         """Move priorities"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/priority/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -29,7 +29,7 @@ class IssuePriorities(SyncAPIResource):
 
     def delete_priority(self, id_: str) -> None:
         """Delete priority"""
-        resp = self._client._request("DELETE", f"/rest/api/3/priority/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/priority/{id_}")
         return None
 
     def get_priority(self, id_: str) -> Priority:
@@ -43,7 +43,7 @@ class AsyncIssuePriorities(AsyncAPIResource):
 
     async def set_default_priority(self, body: SetDefaultPriorityRequest) -> None:
         """Set default priority"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/priority/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -52,7 +52,7 @@ class AsyncIssuePriorities(AsyncAPIResource):
 
     async def move_priorities(self, body: ReorderIssuePriorities) -> None:
         """Move priorities"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/priority/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -61,7 +61,7 @@ class AsyncIssuePriorities(AsyncAPIResource):
 
     async def delete_priority(self, id_: str) -> None:
         """Delete priority"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/priority/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/priority/{id_}")
         return None
 
     async def get_priority(self, id_: str) -> Priority:

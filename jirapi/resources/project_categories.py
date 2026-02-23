@@ -25,7 +25,7 @@ class ProjectCategories(SyncAPIResource):
 
     def remove_project_category(self, id_: str) -> None:
         """Delete project category"""
-        resp = self._client._request("DELETE", f"/rest/api/3/projectCategory/{id_}")
+        self._client._request("DELETE", f"/rest/api/3/projectCategory/{id_}")
         return None
 
     def get_project_category_by_id(self, id_: str) -> ProjectCategory:
@@ -62,7 +62,7 @@ class AsyncProjectCategories(AsyncAPIResource):
 
     async def remove_project_category(self, id_: str) -> None:
         """Delete project category"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/projectCategory/{id_}")
+        await self._client._request("DELETE", f"/rest/api/3/projectCategory/{id_}")
         return None
 
     async def get_project_category_by_id(self, id_: str) -> ProjectCategory:

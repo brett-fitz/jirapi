@@ -11,7 +11,7 @@ class IssueCustomFieldAssociations(SyncAPIResource):
 
     def remove_associations(self, body: FieldAssociationsRequest) -> None:
         """Remove associations"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             "/rest/api/3/field/association",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -20,7 +20,7 @@ class IssueCustomFieldAssociations(SyncAPIResource):
 
     def create_associations(self, body: FieldAssociationsRequest) -> None:
         """Create associations"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/field/association",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -33,7 +33,7 @@ class AsyncIssueCustomFieldAssociations(AsyncAPIResource):
 
     async def remove_associations(self, body: FieldAssociationsRequest) -> None:
         """Remove associations"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             "/rest/api/3/field/association",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -42,7 +42,7 @@ class AsyncIssueCustomFieldAssociations(AsyncAPIResource):
 
     async def create_associations(self, body: FieldAssociationsRequest) -> None:
         """Create associations"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/field/association",
             json=body.model_dump(by_alias=True, exclude_none=True),

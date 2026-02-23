@@ -33,7 +33,7 @@ class Groups(SyncAPIResource):
                 "swapGroupId": swap_group_id,
             }
         )
-        resp = self._client._request("DELETE", "/rest/api/3/group", params=params)
+        self._client._request("DELETE", "/rest/api/3/group", params=params)
         return None
 
     def create_group(self, body: AddGroupBean) -> Group:
@@ -106,7 +106,7 @@ class Groups(SyncAPIResource):
                 "accountId": account_id,
             }
         )
-        resp = self._client._request("DELETE", "/rest/api/3/group/user", params=params)
+        self._client._request("DELETE", "/rest/api/3/group/user", params=params)
         return None
 
     def add_user_to_group(
@@ -173,7 +173,7 @@ class AsyncGroups(AsyncAPIResource):
                 "swapGroupId": swap_group_id,
             }
         )
-        resp = await self._client._request("DELETE", "/rest/api/3/group", params=params)
+        await self._client._request("DELETE", "/rest/api/3/group", params=params)
         return None
 
     async def create_group(self, body: AddGroupBean) -> Group:
@@ -246,7 +246,7 @@ class AsyncGroups(AsyncAPIResource):
                 "accountId": account_id,
             }
         )
-        resp = await self._client._request("DELETE", "/rest/api/3/group/user", params=params)
+        await self._client._request("DELETE", "/rest/api/3/group/user", params=params)
         return None
 
     async def add_user_to_group(

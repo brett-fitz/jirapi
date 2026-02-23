@@ -34,7 +34,7 @@ class Avatars(SyncAPIResource):
 
     def delete_avatar(self, type_: str, owning_object_id: str, id_: str) -> None:
         """Delete avatar"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/universal_avatar/type/{type_}/owner/{owning_object_id}/avatar/{id_}",
         )
@@ -100,7 +100,7 @@ class AsyncAvatars(AsyncAPIResource):
 
     async def delete_avatar(self, type_: str, owning_object_id: str, id_: str) -> None:
         """Delete avatar"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/universal_avatar/type/{type_}/owner/{owning_object_id}/avatar/{id_}",
         )

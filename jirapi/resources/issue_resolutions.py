@@ -26,7 +26,7 @@ class IssueResolutions(SyncAPIResource):
 
     def set_default_resolution(self, body: SetDefaultResolutionRequest) -> None:
         """Set default resolution"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/resolution/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -35,7 +35,7 @@ class IssueResolutions(SyncAPIResource):
 
     def move_resolutions(self, body: ReorderIssueResolutionsRequest) -> None:
         """Move resolutions"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/resolution/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -65,7 +65,7 @@ class IssueResolutions(SyncAPIResource):
     def delete_resolution(self, id_: str, *, replace_with: str) -> None:
         """Delete resolution"""
         params = self._client._build_params(**{"replaceWith": replace_with})
-        resp = self._client._request("DELETE", f"/rest/api/3/resolution/{id_}", params=params)
+        self._client._request("DELETE", f"/rest/api/3/resolution/{id_}", params=params)
         return None
 
     def get_resolution(self, id_: str) -> Resolution:
@@ -75,7 +75,7 @@ class IssueResolutions(SyncAPIResource):
 
     def update_resolution(self, id_: str, body: UpdateResolutionDetails) -> None:
         """Update resolution"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/resolution/{id_}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -95,7 +95,7 @@ class AsyncIssueResolutions(AsyncAPIResource):
 
     async def set_default_resolution(self, body: SetDefaultResolutionRequest) -> None:
         """Set default resolution"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/resolution/default",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -104,7 +104,7 @@ class AsyncIssueResolutions(AsyncAPIResource):
 
     async def move_resolutions(self, body: ReorderIssueResolutionsRequest) -> None:
         """Move resolutions"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/resolution/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -134,7 +134,7 @@ class AsyncIssueResolutions(AsyncAPIResource):
     async def delete_resolution(self, id_: str, *, replace_with: str) -> None:
         """Delete resolution"""
         params = self._client._build_params(**{"replaceWith": replace_with})
-        resp = await self._client._request("DELETE", f"/rest/api/3/resolution/{id_}", params=params)
+        await self._client._request("DELETE", f"/rest/api/3/resolution/{id_}", params=params)
         return None
 
     async def get_resolution(self, id_: str) -> Resolution:
@@ -144,7 +144,7 @@ class AsyncIssueResolutions(AsyncAPIResource):
 
     async def update_resolution(self, id_: str, body: UpdateResolutionDetails) -> None:
         """Update resolution"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/resolution/{id_}",
             json=body.model_dump(by_alias=True, exclude_none=True),

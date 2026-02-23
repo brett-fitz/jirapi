@@ -16,7 +16,7 @@ class TimeTracking(SyncAPIResource):
 
     def select_time_tracking_implementation(self, body: TimeTrackingProvider) -> None:
         """Select time tracking provider"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/configuration/timetracking",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -55,7 +55,7 @@ class AsyncTimeTracking(AsyncAPIResource):
 
     async def select_time_tracking_implementation(self, body: TimeTrackingProvider) -> None:
         """Select time tracking provider"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/configuration/timetracking",
             json=body.model_dump(by_alias=True, exclude_none=True),

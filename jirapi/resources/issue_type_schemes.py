@@ -82,7 +82,7 @@ class IssueTypeSchemes(SyncAPIResource):
 
     def assign_issue_type_scheme_to_project(self, body: IssueTypeSchemeProjectAssociation) -> None:
         """Assign issue type scheme to project"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             "/rest/api/3/issuetypescheme/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -91,16 +91,14 @@ class IssueTypeSchemes(SyncAPIResource):
 
     def delete_issue_type_scheme(self, issue_type_scheme_id: str) -> None:
         """Delete issue type scheme"""
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}"
-        )
+        self._client._request("DELETE", f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}")
         return None
 
     def update_issue_type_scheme(
         self, issue_type_scheme_id: str, body: IssueTypeSchemeUpdateDetails
     ) -> None:
         """Update issue type scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -111,7 +109,7 @@ class IssueTypeSchemes(SyncAPIResource):
         self, issue_type_scheme_id: str, body: IssueTypeIds
     ) -> None:
         """Add issue types to issue type scheme"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}/issuetype",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -122,7 +120,7 @@ class IssueTypeSchemes(SyncAPIResource):
         self, issue_type_scheme_id: str, body: OrderOfIssueTypes
     ) -> None:
         """Change order of issue types"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}/issuetype/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -133,7 +131,7 @@ class IssueTypeSchemes(SyncAPIResource):
         self, issue_type_scheme_id: str, issue_type_id: str
     ) -> None:
         """Remove issue type from issue type scheme"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}/issuetype/{issue_type_id}",
         )
@@ -212,7 +210,7 @@ class AsyncIssueTypeSchemes(AsyncAPIResource):
         self, body: IssueTypeSchemeProjectAssociation
     ) -> None:
         """Assign issue type scheme to project"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             "/rest/api/3/issuetypescheme/project",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -221,16 +219,14 @@ class AsyncIssueTypeSchemes(AsyncAPIResource):
 
     async def delete_issue_type_scheme(self, issue_type_scheme_id: str) -> None:
         """Delete issue type scheme"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}")
         return None
 
     async def update_issue_type_scheme(
         self, issue_type_scheme_id: str, body: IssueTypeSchemeUpdateDetails
     ) -> None:
         """Update issue type scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -241,7 +237,7 @@ class AsyncIssueTypeSchemes(AsyncAPIResource):
         self, issue_type_scheme_id: str, body: IssueTypeIds
     ) -> None:
         """Add issue types to issue type scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}/issuetype",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -252,7 +248,7 @@ class AsyncIssueTypeSchemes(AsyncAPIResource):
         self, issue_type_scheme_id: str, body: OrderOfIssueTypes
     ) -> None:
         """Change order of issue types"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}/issuetype/move",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -263,7 +259,7 @@ class AsyncIssueTypeSchemes(AsyncAPIResource):
         self, issue_type_scheme_id: str, issue_type_id: str
     ) -> None:
         """Remove issue type from issue type scheme"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE",
             f"/rest/api/3/issuetypescheme/{issue_type_scheme_id}/issuetype/{issue_type_id}",
         )

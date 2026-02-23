@@ -79,7 +79,7 @@ class IssueCustomFieldConfigurationApps(SyncAPIResource):
         self, field_id_or_key: str, body: CustomFieldConfigurations
     ) -> None:
         """Update custom field configurations"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/app/field/{field_id_or_key}/context/configuration",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -155,7 +155,7 @@ class AsyncIssueCustomFieldConfigurationApps(AsyncAPIResource):
         self, field_id_or_key: str, body: CustomFieldConfigurations
     ) -> None:
         """Update custom field configurations"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/app/field/{field_id_or_key}/context/configuration",
             json=body.model_dump(by_alias=True, exclude_none=True),

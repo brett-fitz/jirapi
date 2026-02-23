@@ -62,14 +62,14 @@ class Issues(SyncAPIResource):
         )
         return CreatedIssue.model_validate(resp.json())
 
-    def archive_issues_async(self, body: ArchiveIssueAsyncRequest) -> None:
+    def archive_issues_async(self, body: ArchiveIssueAsyncRequest) -> str:
         """Archive issue(s) by JQL"""
         resp = self._client._request(
             "POST",
             "/rest/api/3/issue/archive",
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     def archive_issues(self, body: IssueArchivalSyncRequest) -> IssueArchivalSyncResponse:
         """Archive issue(s) by issue ID/key"""
@@ -143,9 +143,7 @@ class Issues(SyncAPIResource):
     def delete_issue(self, issue_id_or_key: str, *, delete_subtasks: str | None = None) -> None:
         """Delete issue"""
         params = self._client._build_params(**{"deleteSubtasks": delete_subtasks})
-        resp = self._client._request(
-            "DELETE", f"/rest/api/3/issue/{issue_id_or_key}", params=params
-        )
+        self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}", params=params)
         return None
 
     def get_issue(
@@ -194,7 +192,7 @@ class Issues(SyncAPIResource):
                 "expand": expand,
             }
         )
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issue/{issue_id_or_key}",
             params=params,
@@ -204,7 +202,7 @@ class Issues(SyncAPIResource):
 
     def assign_issue(self, issue_id_or_key: str, body: User) -> None:
         """Assign issue"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/issue/{issue_id_or_key}/assignee",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -253,7 +251,7 @@ class Issues(SyncAPIResource):
 
     def notify(self, issue_id_or_key: str, body: Notification) -> None:
         """Send notification for issue"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/issue/{issue_id_or_key}/notify",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -287,7 +285,7 @@ class Issues(SyncAPIResource):
 
     def do_transition(self, issue_id_or_key: str, body: IssueUpdateDetails) -> None:
         """Transition issue"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/issue/{issue_id_or_key}/transitions",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -338,14 +336,14 @@ class AsyncIssues(AsyncAPIResource):
         )
         return CreatedIssue.model_validate(resp.json())
 
-    async def archive_issues_async(self, body: ArchiveIssueAsyncRequest) -> None:
+    async def archive_issues_async(self, body: ArchiveIssueAsyncRequest) -> str:
         """Archive issue(s) by JQL"""
         resp = await self._client._request(
             "POST",
             "/rest/api/3/issue/archive",
             json=body.model_dump(by_alias=True, exclude_none=True),
         )
-        return None
+        return resp.json()
 
     async def archive_issues(self, body: IssueArchivalSyncRequest) -> IssueArchivalSyncResponse:
         """Archive issue(s) by issue ID/key"""
@@ -421,9 +419,7 @@ class AsyncIssues(AsyncAPIResource):
     ) -> None:
         """Delete issue"""
         params = self._client._build_params(**{"deleteSubtasks": delete_subtasks})
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/issue/{issue_id_or_key}", params=params
-        )
+        await self._client._request("DELETE", f"/rest/api/3/issue/{issue_id_or_key}", params=params)
         return None
 
     async def get_issue(
@@ -474,7 +470,7 @@ class AsyncIssues(AsyncAPIResource):
                 "expand": expand,
             }
         )
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issue/{issue_id_or_key}",
             params=params,
@@ -484,7 +480,7 @@ class AsyncIssues(AsyncAPIResource):
 
     async def assign_issue(self, issue_id_or_key: str, body: User) -> None:
         """Assign issue"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/issue/{issue_id_or_key}/assignee",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -533,7 +529,7 @@ class AsyncIssues(AsyncAPIResource):
 
     async def notify(self, issue_id_or_key: str, body: Notification) -> None:
         """Send notification for issue"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/issue/{issue_id_or_key}/notify",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -567,7 +563,7 @@ class AsyncIssues(AsyncAPIResource):
 
     async def do_transition(self, issue_id_or_key: str, body: IssueUpdateDetails) -> None:
         """Transition issue"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/issue/{issue_id_or_key}/transitions",
             json=body.model_dump(by_alias=True, exclude_none=True),

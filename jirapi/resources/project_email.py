@@ -16,7 +16,7 @@ class ProjectEmail(SyncAPIResource):
 
     def update_project_email(self, project_id: str, body: ProjectEmailAddress) -> None:
         """Set project's sender email"""
-        resp = self._client._request(
+        self._client._request(
             "PUT",
             f"/rest/api/3/project/{project_id}/email",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -34,7 +34,7 @@ class AsyncProjectEmail(AsyncAPIResource):
 
     async def update_project_email(self, project_id: str, body: ProjectEmailAddress) -> None:
         """Set project's sender email"""
-        resp = await self._client._request(
+        await self._client._request(
             "PUT",
             f"/rest/api/3/project/{project_id}/email",
             json=body.model_dump(by_alias=True, exclude_none=True),

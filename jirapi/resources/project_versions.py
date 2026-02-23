@@ -76,7 +76,7 @@ class ProjectVersions(SyncAPIResource):
 
     def merge_versions(self, id_: str, move_issues_to: str) -> None:
         """Merge versions"""
-        resp = self._client._request("PUT", f"/rest/api/3/version/{id_}/mergeto/{move_issues_to}")
+        self._client._request("PUT", f"/rest/api/3/version/{id_}/mergeto/{move_issues_to}")
         return None
 
     def move_version(self, id_: str, body: VersionMoveBean) -> Version:
@@ -118,7 +118,7 @@ class ProjectVersions(SyncAPIResource):
 
     def delete_and_replace_version(self, id_: str, body: DeleteAndReplaceVersionBean) -> None:
         """Delete and replace version"""
-        resp = self._client._request(
+        self._client._request(
             "POST",
             f"/rest/api/3/version/{id_}/removeAndSwap",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -132,7 +132,7 @@ class ProjectVersions(SyncAPIResource):
 
     def delete_related_work(self, version_id: str, related_work_id: str) -> None:
         """Delete related work"""
-        resp = self._client._request(
+        self._client._request(
             "DELETE", f"/rest/api/3/version/{version_id}/relatedwork/{related_work_id}"
         )
         return None
@@ -202,9 +202,7 @@ class AsyncProjectVersions(AsyncAPIResource):
 
     async def merge_versions(self, id_: str, move_issues_to: str) -> None:
         """Merge versions"""
-        resp = await self._client._request(
-            "PUT", f"/rest/api/3/version/{id_}/mergeto/{move_issues_to}"
-        )
+        await self._client._request("PUT", f"/rest/api/3/version/{id_}/mergeto/{move_issues_to}")
         return None
 
     async def move_version(self, id_: str, body: VersionMoveBean) -> Version:
@@ -246,7 +244,7 @@ class AsyncProjectVersions(AsyncAPIResource):
 
     async def delete_and_replace_version(self, id_: str, body: DeleteAndReplaceVersionBean) -> None:
         """Delete and replace version"""
-        resp = await self._client._request(
+        await self._client._request(
             "POST",
             f"/rest/api/3/version/{id_}/removeAndSwap",
             json=body.model_dump(by_alias=True, exclude_none=True),
@@ -260,7 +258,7 @@ class AsyncProjectVersions(AsyncAPIResource):
 
     async def delete_related_work(self, version_id: str, related_work_id: str) -> None:
         """Delete related work"""
-        resp = await self._client._request(
+        await self._client._request(
             "DELETE", f"/rest/api/3/version/{version_id}/relatedwork/{related_work_id}"
         )
         return None

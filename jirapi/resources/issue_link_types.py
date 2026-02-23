@@ -26,7 +26,7 @@ class IssueLinkTypes(SyncAPIResource):
 
     def delete_issue_link_type(self, issue_link_type_id: str) -> None:
         """Delete issue link type"""
-        resp = self._client._request("DELETE", f"/rest/api/3/issueLinkType/{issue_link_type_id}")
+        self._client._request("DELETE", f"/rest/api/3/issueLinkType/{issue_link_type_id}")
         return None
 
     def get_issue_link_type(self, issue_link_type_id: str) -> IssueLinkType:
@@ -63,9 +63,7 @@ class AsyncIssueLinkTypes(AsyncAPIResource):
 
     async def delete_issue_link_type(self, issue_link_type_id: str) -> None:
         """Delete issue link type"""
-        resp = await self._client._request(
-            "DELETE", f"/rest/api/3/issueLinkType/{issue_link_type_id}"
-        )
+        await self._client._request("DELETE", f"/rest/api/3/issueLinkType/{issue_link_type_id}")
         return None
 
     async def get_issue_link_type(self, issue_link_type_id: str) -> IssueLinkType:

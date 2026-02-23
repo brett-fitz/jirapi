@@ -16,7 +16,7 @@ class Tasks(SyncAPIResource):
 
     def cancel_task(self, task_id: str) -> None:
         """Cancel task"""
-        resp = self._client._request("POST", f"/rest/api/3/task/{task_id}/cancel")
+        self._client._request("POST", f"/rest/api/3/task/{task_id}/cancel")
         return None
 
 
@@ -30,5 +30,5 @@ class AsyncTasks(AsyncAPIResource):
 
     async def cancel_task(self, task_id: str) -> None:
         """Cancel task"""
-        resp = await self._client._request("POST", f"/rest/api/3/task/{task_id}/cancel")
+        await self._client._request("POST", f"/rest/api/3/task/{task_id}/cancel")
         return None

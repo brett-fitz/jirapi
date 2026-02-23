@@ -64,12 +64,12 @@ class Screens(SyncAPIResource):
 
     def add_field_to_default_screen(self, field_id: str) -> None:
         """Add field to default screen"""
-        resp = self._client._request("POST", f"/rest/api/3/screens/addToDefault/{field_id}")
+        self._client._request("POST", f"/rest/api/3/screens/addToDefault/{field_id}")
         return None
 
     def delete_screen(self, screen_id: str) -> None:
         """Delete screen"""
-        resp = self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}")
+        self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}")
         return None
 
     def update_screen(self, screen_id: str, body: UpdateScreenDetails) -> Screen:
@@ -140,12 +140,12 @@ class AsyncScreens(AsyncAPIResource):
 
     async def add_field_to_default_screen(self, field_id: str) -> None:
         """Add field to default screen"""
-        resp = await self._client._request("POST", f"/rest/api/3/screens/addToDefault/{field_id}")
+        await self._client._request("POST", f"/rest/api/3/screens/addToDefault/{field_id}")
         return None
 
     async def delete_screen(self, screen_id: str) -> None:
         """Delete screen"""
-        resp = await self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}")
+        await self._client._request("DELETE", f"/rest/api/3/screens/{screen_id}")
         return None
 
     async def update_screen(self, screen_id: str, body: UpdateScreenDetails) -> Screen:
