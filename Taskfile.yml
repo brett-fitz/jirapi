@@ -56,6 +56,23 @@ tasks:
     cmd: uv run pytest -m integration
 
   # ---------------------------------------------------------------------------
+  # Code Generation
+  # ---------------------------------------------------------------------------
+  generate:models:
+    desc: Generate Pydantic models from the Jira OpenAPI spec
+    cmd: uv run python scripts/generate_models.py
+
+  generate:resources:
+    desc: Generate resource classes from the Jira OpenAPI spec
+    cmd: uv run python scripts/generate_resources.py
+
+  generate:
+    desc: Run all code generators (models + resources)
+    cmds:
+      - task: generate:models
+      - task: generate:resources
+
+  # ---------------------------------------------------------------------------
   # Building
   # ---------------------------------------------------------------------------
   build:

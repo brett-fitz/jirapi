@@ -1,0 +1,83 @@
+name: claude / issue / code
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  claude:
+    if: |
+      github.event.comment.user.login == 'brett-fitz' &&
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Set up UV
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --all-groups
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          use_commit_signing: true
+
+          additional_permissions: |
+            actions: read
+
+          prompt: |
+            <task>
+              <instructions>
+                Review the issue context and user request first. Only complete the user request if you can.
+                If you believe the task is too difficult or needs to be broken up, then suggest this.
+                If you need to know more about the issue, then ask the user for more information.
+                If you create a pull request, provide the issue number in the pull request title.
+                e.g. "[#123] Add feature".
+                If you create a pull request, be sure to follow .github/pull_request_template.md for
+                the pull request template.
+                If you make changes to the code, ensure proper pytest coverage is maintained.
+                If you make changes to the code, be sure to run the pytests tests and ensure they pass.
+                If you make changes to the code, be sure to run the ruff linting, formatting and ensure it passes.
+              </instructions>
+
+              <issue_context>
+                REPO: ${{ github.repository }}
+                ISSUE NUMBER: ${{ github.event.issue.number }}
+                TITLE: ${{ github.event.issue.title }}
+                BODY:
+                  ${{ github.event.issue.body }}
+                AUTHOR: ${{ github.event.issue.user.login }}
+                COMMENT AUTHOR: ${{ github.event.comment.user.login }}
+              </issue_context>
+
+              <user_request>
+                COMMENT: ${{ github.event.comment.body }}
+
+                Note: If the comment above only contains "@claude" with no other meaningful instructions,
+                treat this as a request to "Resolve the issue" based on the issue context provided.
+              </user_request>
+            </task>
+
+          claude_args: |
+            --model "claude-opus-4-6"
+            --allowed-tools Bash(gh issue:*),Bash(gh search:*),Bash(gh pr view:*),Bash(gh pr comment:*),Bash(gh pr list:*),Bash(gh pr create:*),Bash(gh pr update:*)"
+
+          track_progress: true
+
+      - name: Optimize UV cache
+        run: uv cache prune --ci
