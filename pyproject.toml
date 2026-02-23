@@ -16,6 +16,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Typing :: Typed",
 ]
 dependencies = [
@@ -76,6 +77,13 @@ force-sort-within-sections = true
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D100", "D101", "D102", "D103", "D104"]
+"jirapi/models/**" = ["D100", "D101", "D104", "E501"]
+"jirapi/resources/**" = ["D100", "D101", "D102", "D104", "D415", "F401", "F841"]
+"jirapi/client.py" = ["D102"]
+"scripts/**" = ["D103"]
 
 # ---------------------------------------------------------------------------
 # pytest

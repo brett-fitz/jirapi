@@ -1,0 +1,53 @@
+name: claude / issue / triage
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  triage:
+    if: github.event.issue.user.login == 'brett-fitz'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+      pull-requests: read
+      id-token: write
+      actions: read
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            ISSUE NUMBER: ${{ github.event.issue.number }}
+            TITLE: ${{ github.event.issue.title }}
+            BODY: ${{ github.event.issue.body }}
+            AUTHOR: ${{ github.event.issue.user.login }}
+
+            Analyze this new issue and perform the following steps:
+            1. Determine if it's a bug report, feature request, or question
+            2. Assess priority (critical, high, medium, low)
+            3. Suggest appropriate labels
+            4. Check if it duplicates existing issues
+            5. Check if it is related to existing issues
+            6. Check if it is dependent on other opened issues
+            7. If it is a bug, triage it but do not resolve it.
+            8. If it is a feature request, do NOT suggest a solution or resolve it.
+
+            Based on your analysis, add the appropriate labels using:
+            `gh issue edit [number] --add-label "label1,label2"`
+
+            Finally when you are done, post a comment on the issue with the following information:
+            - A concise summary of your triage and steps taken.
+            - If it appears to be a duplicate, mention the original issue.
+            - If the issue relates to another issue, then add a comment "Relates to #<issue number>".
+            - If the issue is dependent on another issue, then add a comment "Depends on #<issue number>".
+
+            REMEMBER: Your job is to triage the issue, not to resolve it.
+          claude_args: |
+            --model "claude-sonnet-4-6"
+            --allowedTools "Bash(gh issue:*),Bash(gh search:*),Bash(gh pr view:*),Bash(gh pr comment:*),Bash(gh pr list:*)"

@@ -39,6 +39,13 @@ task check                  # lint + format check + tests
 task lock:check             # verify lockfile is up-to-date
 ```
 
+### Code Generation
+```bash
+task generate:models        # generate Pydantic models from OpenAPI spec
+task generate:resources     # generate resource classes from OpenAPI spec
+task generate               # run all generators (models + resources)
+```
+
 ### Building
 ```bash
 task build                  # uv build
@@ -53,6 +60,10 @@ jirapi/                     # Python package (the library)
 ├── models/                 # Pydantic request/response models
 ├── exceptions.py           # Custom exception hierarchy
 └── py.typed                # PEP 561 marker
+
+scripts/                    # Code generation scripts
+├── generate_models.py      # Pydantic model generator (OpenAPI → models/)
+└── generate_resources.py   # Resource class generator (OpenAPI → resources/)
 
 tests/                      # Test suites
 ├── unit/                   # Unit tests (pytest default)
@@ -119,6 +130,14 @@ docs/                       # Documentation
 - Follow semantic versioning (MAJOR.MINOR.PATCH)
 - **MUST run `task format && task lint` before considering work complete**
 
+### Changelog
+
+- **MUST update `CHANGELOG.md`** when making user-facing changes
+- Add a new version section (e.g. `## [0.2.0] - YYYY-MM-DD`) or append to the latest unreleased section at the top
+- Use the appropriate subsection: `Added`, `Changed`, `Fixed`, `Removed`
+- Follow [Keep a Changelog](https://keepachangelog.com/) format
+- Do not modify entries for already-released versions
+
 ### Development Workflow
 
 1. Create feature branch
@@ -126,4 +145,5 @@ docs/                       # Documentation
 3. Run quality checks: `task format && task lint`
 4. Run tests: `task test:cov`
 5. Verify lockfile: `task lock:check`
-6. Submit PR using the PR template
+6. Update `CHANGELOG.md`
+7. Submit PR using the PR template

@@ -14,7 +14,12 @@
       "Bash(tail:*)",
       "Bash(grep:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh pr checks:*)"
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr list:*)",
+      "Bash(python3:*)",
+      "Bash(gh api:*)",
+      "Bash(task:*)"
     ],
     "deny": [
       "Bash(curl *)",
@@ -22,6 +27,20 @@
       "Read(./.env)",
       "Read(./.env.*)",
       "Read(./secrets/**)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
     ]
+  },
+  "enabledPlugins": {
+    "security-guidance@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true
   }
 }
