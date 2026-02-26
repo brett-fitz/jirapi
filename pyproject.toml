@@ -1,6 +1,6 @@
 [project]
 name = "jirapi"
-version = "0.1.0"
+version = "0.2.0"
 description = "Modern Python Jira client — sync and async — powered by HTTPX"
 authors = [{ name = "Brett Fitzpatrick", email = "brettfitz@protonmail.com" }]
 readme = "README.md"
@@ -80,10 +80,15 @@ convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["D100", "D101", "D102", "D103", "D104"]
-"jirapi/models/**" = ["D100", "D101", "D104", "E501"]
-"jirapi/resources/**" = ["D100", "D101", "D102", "D104", "D415", "F401", "F841"]
+"jirapi/models/__init__.py" = ["D100", "D104", "E501", "F403", "F405"]
+"jirapi/models/_shared.py" = ["D100", "D101", "D104", "E501", "F821"]
+"jirapi/models/[!_]*.py" = ["D100", "D101", "D104", "E501", "F821"]
 "jirapi/client.py" = ["D102"]
 "scripts/**" = ["D103"]
+# Generated resource packages: jirapi/<group>/_resource.py + sub-resource files
+"jirapi/*/_resource.py" = ["D100", "D101", "D102", "D104", "D415", "F401", "F841"]
+"jirapi/*/[!_]*.py" = ["D100", "D101", "D102", "D104", "D415", "F401", "F841"]
+"jirapi/*/__init__.py" = ["D100", "D104"]
 
 # ---------------------------------------------------------------------------
 # pytest

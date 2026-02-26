@@ -1,4 +1,4 @@
-"""Tests for jirapi.resources.issues (Issues / AsyncIssues)."""
+"""Tests for jirapi.issues (Issues / AsyncIssues)."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ class TestIssuesSync:
             )
         )
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        issue = client.issues.get_issue("PROJ-1")
+        issue = client.issues.get("PROJ-1")
         assert issue.key == "PROJ-1"
         assert issue.id == "10001"
         client.close()
@@ -50,7 +50,7 @@ class TestIssuesSync:
 
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
         body = IssueUpdateDetails()
-        created = client.issues.create_issue(body)
+        created = client.issues.create(body)
         assert created.key == "PROJ-2"
         client.close()
 
@@ -58,7 +58,7 @@ class TestIssuesSync:
     def test_delete_issue(self, respx_mock: respx.MockRouter) -> None:
         respx_mock.delete("/rest/api/3/issue/PROJ-3").mock(return_value=httpx.Response(204))
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        result = client.issues.delete_issue("PROJ-3")
+        result = client.issues.delete("PROJ-3")
         assert result is None
         client.close()
 
@@ -81,5 +81,5 @@ class TestIssuesAsync:
             )
         )
         async with AsyncJira(url=BASE_URL, email="a@b.com", api_token="tok") as client:
-            issue = await client.issues.get_issue("PROJ-1")
+            issue = await client.issues.get("PROJ-1")
             assert issue.key == "PROJ-1"

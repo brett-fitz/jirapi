@@ -1,6 +1,6 @@
 """Tests for resource methods that return primitive types (str, int, dict).
 
-These cover the code paths added when fixing 12 endpoints that previously
+These cover the code paths added when fixing endpoints that previously
 returned None due to unhandled OpenAPI schema patterns.
 """
 
@@ -25,7 +25,7 @@ class TestStringReturn:
             return_value=httpx.Response(200, json="en_US")
         )
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        result = client.myself.get_preference(key="user.locale")
+        result = client.users.get_preference(key="user.locale")
         assert result == "en_US"
         assert isinstance(result, str)
         client.close()
@@ -37,7 +37,7 @@ class TestStringReturn:
             return_value=httpx.Response(200, json="en_US")
         )
         async with AsyncJira(url=BASE_URL, email="a@b.com", api_token="tok") as client:
-            result = await client.myself.get_preference(key="user.locale")
+            result = await client.users.get_preference(key="user.locale")
             assert result == "en_US"
 
 
@@ -51,7 +51,7 @@ class TestIntReturn:
 
         body = CreatePlanRequest.model_construct(name="Test Plan")
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        result = client.plans.create_plan(body=body)
+        result = client.plans.create(body=body)
         assert result == 42
         assert isinstance(result, int)
         client.close()
@@ -64,7 +64,7 @@ class TestIntReturn:
 
         body = CreatePlanRequest.model_construct(name="Test Plan")
         async with AsyncJira(url=BASE_URL, email="a@b.com", api_token="tok") as client:
-            result = await client.plans.create_plan(body=body)
+            result = await client.plans.create(body=body)
             assert result == 99
 
 
@@ -81,7 +81,7 @@ class TestDictReturn:
             return_value=httpx.Response(200, json=roles_payload)
         )
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        result = client.project_roles.get_project_roles("PROJ")
+        result = client.projects.roles.list("PROJ")
         assert isinstance(result, dict)
         assert "Administrators" in result
         assert "Developers" in result
@@ -97,6 +97,6 @@ class TestDictReturn:
             return_value=httpx.Response(200, json=roles_payload)
         )
         async with AsyncJira(url=BASE_URL, email="a@b.com", api_token="tok") as client:
-            result = await client.project_roles.get_project_roles("PROJ")
+            result = await client.projects.roles.list("PROJ")
             assert isinstance(result, dict)
             assert "Administrators" in result

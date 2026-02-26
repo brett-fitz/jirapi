@@ -1,4 +1,4 @@
-"""Tests for jirapi.resources.projects (Projects / AsyncProjects)."""
+"""Tests for jirapi.projects (Projects / AsyncProjects)."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ class TestProjectsSync:
             )
         )
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        project = client.projects.get_project("PROJ")
+        project = client.projects.get("PROJ")
         assert project.key == "PROJ"
         assert project.name == "My Project"
         client.close()
@@ -56,7 +56,7 @@ class TestProjectsSync:
             )
         )
         client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
-        result = client.projects.search_projects()
+        result = client.projects.search()
         assert result.total == 1
         client.close()
 
@@ -79,5 +79,5 @@ class TestProjectsAsync:
             )
         )
         async with AsyncJira(url=BASE_URL, email="a@b.com", api_token="tok") as client:
-            project = await client.projects.get_project("PROJ")
+            project = await client.projects.get("PROJ")
             assert project.key == "PROJ"
