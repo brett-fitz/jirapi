@@ -1,6 +1,6 @@
 [project]
 name = "jirapi"
-version = "0.2.0"
+version = "0.3.0"
 description = "Modern Python Jira client — sync and async — powered by HTTPX"
 authors = [{ name = "Brett Fitzpatrick", email = "brettfitz@protonmail.com" }]
 readme = "README.md"
@@ -34,6 +34,7 @@ Changelog = "https://github.com/brett-fitz/jirapi/blob/main/CHANGELOG.md"
 [dependency-groups]
 dev = [
     "ruff>=0.12.0",
+    "ty>=0.0.18",
 ]
 test = [
     "pytest>=9.0.0",
@@ -133,3 +134,22 @@ exclude_lines = [
 ]
 show_missing = true
 precision = 2
+
+# ---------------------------------------------------------------------------
+# ty
+# ---------------------------------------------------------------------------
+[tool.ty.environment]
+python-version = "3.11"
+
+[tool.ty.rules]
+# Auto-generated model files use a runtime namespace-injection pattern so that
+# Pydantic can resolve cross-module forward references at validation time.
+# ty cannot see those injected names statically, so the rule produces false
+# positives on all generated model submodules.
+unresolved-reference = "warn"
+
+# Generated resource classes expose a public `list()` method which shadows the
+# built-in `list` type within that class scope.  ty therefore rejects
+# `list[str]` annotations on other methods in the same class as an invalid
+# type expression.  Downgrade to a warning until the generator is updated.
+invalid-type-form = "warn"

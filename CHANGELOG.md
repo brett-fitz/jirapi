@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-02-26
+
+### Added
+
+- **ty type checking**: Added Astral's `ty` type checker as a dev dependency. Run locally with `task typecheck`; a dedicated `typecheck` CI job runs in parallel with `lint` on every PR. Two rules that produce known false positives on auto-generated code (`unresolved-reference`, `invalid-type-form`) are downgraded to warnings in `[tool.ty.rules]` until the underlying generator patterns are addressed.
+
+### Fixed
+
+- **StatusCategory bug**: `WorkflowStatusCategories.list()` and `.get()` called `.model_validate()` on `StatusCategory` (a `StrEnum`), which would crash at runtime with `AttributeError`. Fixed to use the correct `StatusCategory3` `BaseModel`, and `list()` now properly parses the array response.
+- **Resource generator enum guard**: `generate_resources.py` now detects enum response models and emits a warning instead of generating `.model_validate()` calls that would fail at runtime.
+
 ## [0.2.0] - 2026-02-25
 
 ### Changed (BREAKING)

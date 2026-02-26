@@ -35,7 +35,8 @@ task test:integration       # requires live Jira API access
 task format                 # uv run ruff format .
 task lint                   # uv run ruff check .
 task lint:fix               # uv run ruff check . --fix
-task check                  # lint + format check + tests
+task typecheck              # uv run ty check jirapi
+task check                  # lint + format check + typecheck + tests
 task lock:check             # verify lockfile is up-to-date
 ```
 

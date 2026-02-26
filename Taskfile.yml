@@ -31,6 +31,13 @@ tasks:
     cmd: uv run ruff format --check .
 
   # ---------------------------------------------------------------------------
+  # Type Checking
+  # ---------------------------------------------------------------------------
+  typecheck:
+    desc: Run ty type checker
+    cmd: uv run ty check jirapi
+
+  # ---------------------------------------------------------------------------
   # Testing
   # ---------------------------------------------------------------------------
   test:
@@ -83,10 +90,11 @@ tasks:
   # Quality (CI-like aggregate)
   # ---------------------------------------------------------------------------
   check:
-    desc: Run all quality checks (lint + format check + tests)
+    desc: Run all quality checks (lint + format check + typecheck + tests)
     cmds:
       - task: lint
       - task: format:check
+      - task: typecheck
       - task: test
 
   lock:check:
