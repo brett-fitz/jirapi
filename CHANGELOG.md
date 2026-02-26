@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-02-25
+
+### Changed (BREAKING)
+
+- **Resource consolidation**: Consolidated 97 OpenAPI-tag-based resource files into 39 logical resource groups. Major domains (issues, projects, fields, screens, workflows, users) now use sub-resources for better organization (e.g. `jira.issues.comments`, `jira.projects.versions`)
+- **Method name simplification**: Shortened verbose method names using auto-stripping and manual overrides. Examples: `jira.issue_search.search_and_reconsile_issues_using_jql()` → `jira.issues.search()`, `jira.issues.get_issue()` → `jira.issues.get()`, `jira.projects.search_projects()` → `jira.projects.search()`
+- **Directory restructuring**: Moved from flat `jirapi/resources/*.py` to per-group packages `jirapi/<group>/` (e.g. `jirapi/issues/`, `jirapi/projects/`). Each group has `_resource.py` (core methods) and optional sub-resource modules
+- **Import paths**: All resource imports changed from `jirapi.resources.<tag>` to `jirapi.<group>` (e.g. `from jirapi.issues import Issues`)
+- Client properties reduced from 97 to 39 for better discoverability
+
+### Added
+
+- **Stripped Bean suffixes**: Removed the Java-inherited `Bean` suffix from 95 model class names (e.g. `IssueBean` → `Issue`, `CommentBean` → `Comment`, `ProjectBean` → `Project`). 3 redundant Bean variants (`UserBean`, `IconBean`, `FieldAssociationSchemeLinksBean`) were merged into their existing non-Bean counterparts
+- **Models domain split**: Split the monolithic `models/__init__.py` (21K lines) into 37 domain-themed submodules plus `_shared.py`. Models are now navigable by domain (e.g. `from jirapi.models.issues import Issue`) while `from jirapi.models import Issue` remains fully supported
+- Sub-resource pattern: major resource groups expose sub-resources as `@cached_property` (e.g. `jira.issues.comments`, `jira.issues.worklogs`, `jira.projects.roles`)
+- 14 new model organization tests covering backward-compatible imports, domain submodule imports, cross-module Pydantic annotation resolution, and `__all__` completeness
+- 7 new sub-resource wiring tests verifying type correctness and caching behavior
+- Method name conflict detection in the code generator with automatic fallback to original names
+- Taskfile commands for code generation: `task generate`, `task generate:models`, `task generate:resources`
+
 ## [0.1.0] - 2026-02-22
 
 ### Added

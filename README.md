@@ -7,7 +7,7 @@ Modern, type-safe Python client for the **Jira Cloud REST API** — built on [HT
 - **Sync and async** — identical API surface via `Jira` (sync) and `AsyncJira` (async)
 - **Full API coverage** — auto-generated resource methods for 580+ Jira Cloud REST endpoints
 - **Type-safe** — Pydantic v2 models for every request and response payload
-- **Composition pattern** — resource groups (`issues`, `projects`, `users`, …) exposed as lazy `@cached_property` attributes
+- **Intuitive resource hierarchy** — `jira.issues.comments.list()`, `jira.projects.versions.create()`, etc.
 - **Pagination helpers** — built-in iterators for offset, PageBean, and cursor pagination
 - **Semantic exceptions** — `AuthenticationError`, `NotFoundError`, `RateLimitError`, etc.
 - **Modern Python** — 3.11+, built-in generics, union types, no legacy `typing` imports
@@ -35,11 +35,18 @@ jira = Jira(
 )
 
 # Fetch a single issue
-issue = jira.issues.get_issue("PROJ-123")
+issue = jira.issues.get("PROJ-123")
 print(issue.fields.summary)
 
+# Search with JQL
+results = jira.issues.search(jql="project = PROJ ORDER BY created DESC")
+
+# Access sub-resources
+comments = jira.issues.comments.list("PROJ-123")
+jira.issues.watchers.add("PROJ-123")
+
 # Search projects
-page = jira.projects.search_projects(query="backend", max_results=10)
+page = jira.projects.search(query="backend", max_results=10)
 
 # Always close when done (or use a context manager)
 jira.close()
@@ -51,7 +58,7 @@ jira.close()
 from jirapi import Jira
 
 with Jira(url="https://yoursite.atlassian.net", email="...", api_token="...") as jira:
-    issue = jira.issues.get_issue("PROJ-123")
+    issue = jira.issues.get("PROJ-123")
 ```
 
 ### Asynchronous
@@ -66,7 +73,7 @@ async def main():
         email="you@example.com",
         api_token="your-api-token",
     ) as jira:
-        issue = await jira.issues.get_issue("PROJ-123")
+        issue = await jira.issues.get("PROJ-123")
         print(issue.fields.summary)
 
 asyncio.run(main())
@@ -74,19 +81,27 @@ asyncio.run(main())
 
 ## Resource Groups
 
-All API endpoints are organised into resource groups accessible as properties on the client:
+All API endpoints are organised into logical resource groups accessible as properties on the client:
 
 ```python
-jira.issues               # Issues, changelogs, transitions
-jira.projects             # Projects CRUD and search
-jira.users                # User lookup and management
-jira.issue_search         # JQL search
+jira.issues               # Issues: CRUD, search, transitions, bulk ops
+jira.issues.comments      # Sub-resource: issue comments
+jira.issues.attachments   # Sub-resource: issue attachments
+jira.issues.worklogs      # Sub-resource: issue worklogs
+jira.projects             # Projects: CRUD, search, features, email, validation
+jira.projects.versions    # Sub-resource: project versions
+jira.projects.components  # Sub-resource: project components
+jira.projects.roles       # Sub-resource: project roles & actors
+jira.users                # User lookup, search, preferences
+jira.workflows            # Workflow definitions and management
 jira.dashboards           # Dashboard operations
 jira.filters              # Saved filter management
-jira.workflows            # Workflow definitions
-jira.permissions          # Permission checks
-jira.server_info          # Jira instance metadata
-# … 60+ resource groups in total
+jira.permissions          # Permission checks and schemes
+jira.fields               # Field configuration and custom fields
+jira.screens              # Screen configuration
+jira.jql                  # JQL utilities and functions
+jira.plans                # Plans and team management
+# … 39 resource groups with 37 sub-resources
 ```
 
 Each method returns a strongly-typed Pydantic model:
@@ -95,7 +110,7 @@ Each method returns a strongly-typed Pydantic model:
 from jirapi.models import IssueUpdateDetails
 
 # Create an issue
-created = jira.issues.create_issue(
+created = jira.issues.create(
     body=IssueUpdateDetails.model_validate({
         "fields": {
             "project": {"key": "PROJ"},
@@ -118,7 +133,7 @@ import time
 jira = Jira(url="...", email="...", api_token="...")
 
 try:
-    jira.issues.get_issue("DOES-NOT-EXIST")
+    jira.issues.get("DOES-NOT-EXIST")
 except NotFoundError as e:
     print(f"Issue not found: {e}")
 except RateLimitError as e:
@@ -194,17 +209,31 @@ jirapi/
 ├── _types.py            # Type aliases (JSON, Params, T)
 ├── exceptions.py        # Exception hierarchy
 ├── pagination.py        # Offset / PageBean / cursor iterators
-├── models/              # 967 auto-generated Pydantic v2 models
+├── models/              # auto-generated Pydantic v2 models
 │   └── __init__.py
-└── resources/           # 60+ auto-generated resource modules
-    ├── __init__.py
-    ├── issues.py        # Issues + AsyncIssues
-    ├── projects.py      # Projects + AsyncProjects
-    └── ...
+├── issues/              # Issues resource group
+│   ├── __init__.py      # Exports Issues, AsyncIssues
+│   ├── _resource.py     # Core: get, create, search, transitions, bulk ops
+│   ├── comments.py      # Sub-resource: IssueComments
+│   ├── attachments.py   # Sub-resource: IssueAttachments
+│   ├── worklogs.py      # Sub-resource: IssueWorklogs
+│   └── ...              # votes, watchers, links, properties, etc.
+├── projects/            # Projects resource group
+│   ├── _resource.py     # Core: CRUD, search, features, email, validation
+│   ├── versions.py      # Sub-resource: ProjectVersions
+│   ├── components.py    # Sub-resource: ProjectComponents
+│   └── ...              # roles, categories, templates, etc.
+├── workflows/           # Workflows + schemes, drafts, rules, statuses
+├── users/               # Users, search, preferences + properties sub-resource
+├── fields/              # Fields + custom field config sub-resources
+├── screens/             # Screens + schemes, tabs sub-resources
+├── labels/              # Standalone: Labels (1 method)
+├── webhooks/            # Standalone: Webhooks
+└── ...                  # 39 resource packages total
 
 scripts/
 ├── generate_models.py     # OpenAPI → Pydantic models
-└── generate_resources.py  # OpenAPI → resource classes + client wiring
+└── generate_resources.py  # OpenAPI → resource packages + client wiring
 ```
 
 ## License
