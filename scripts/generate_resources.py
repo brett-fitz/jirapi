@@ -14,12 +14,16 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 import json
+import logging
 from pathlib import Path
 import re
 import shutil
 import subprocess
 import textwrap
 from typing import Any
+
+
+logger = logging.getLogger(__name__)
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -802,6 +806,24 @@ _PRIMITIVE_TYPE_MAP: dict[str, str] = {
 }
 _NON_MODEL_TYPES: set[str] = {"str", "int", "float", "bool", "dict[str, Any]"}
 
+_MODELS_DIR = JIRAPI_DIR / "models"
+
+
+def _discover_enum_models() -> set[str]:
+    """Scan generated model files and return the set of enum class names.
+
+    These classes inherit from ``StrEnum`` or ``Enum`` and do NOT have
+    ``model_validate`` — the resource generator must not emit
+    ``.model_validate()`` calls for them.
+    """
+    enum_names: set[str] = set()
+    if not _MODELS_DIR.is_dir():
+        return enum_names
+    for path in _MODELS_DIR.glob("*.py"):
+        for match in re.finditer(r"^class (\w+)\((StrEnum|Enum)\)", path.read_text(), re.MULTILINE):
+            enum_names.add(match.group(1))
+    return enum_names
+
 
 def _get_success_response(op: dict[str, Any]) -> tuple[str | None, str]:
     """Return (response_type, status_code) for the first 2xx response."""
@@ -951,6 +973,7 @@ def _build_method_body(
     *,
     is_async: bool,
     renames: dict[str, str],
+    enum_models: set[str] | None = None,
 ) -> list[str]:
     lines: list[str] = []
     if op["summary"]:
@@ -978,9 +1001,20 @@ def _build_method_body(
 
     resp_type = op["response_model"]
     if resp_type and resp_type not in _NON_MODEL_TYPES:
-        lines.append(f"        resp = {call}")
         model = renames.get(resp_type, resp_type)
-        lines.append(f"        return {model}.model_validate(resp.json())")
+        if enum_models and model in enum_models:
+            logger.warning(
+                "Response model %r for %s %s is an Enum (no model_validate). "
+                "Falling back to raw resp.json(). Fix the model mapping.",
+                model,
+                op["http_method"],
+                op["path"],
+            )
+            lines.append(f"        resp = {call}")
+            lines.append("        return resp.json()")
+        else:
+            lines.append(f"        resp = {call}")
+            lines.append(f"        return {model}.model_validate(resp.json())")
     elif resp_type in _NON_MODEL_TYPES:
         lines.append(f"        resp = {call}")
         lines.append("        return resp.json()")
@@ -999,6 +1033,7 @@ def _generate_class(
     *,
     is_async: bool,
     sub_resources: list[tuple[str, str, str]] | None = None,
+    enum_models: set[str] | None = None,
 ) -> list[str]:
     """Generate lines for one resource class.
 
@@ -1024,7 +1059,9 @@ def _generate_class(
 
     for op in operations:
         lines.append(_build_method_sig(op, is_async=is_async, renames=renames))
-        lines.extend(_build_method_body(op, is_async=is_async, renames=renames))
+        lines.extend(
+            _build_method_body(op, is_async=is_async, renames=renames, enum_models=enum_models)
+        )
         lines.append("")
 
     return lines
@@ -1043,6 +1080,7 @@ def generate_resource_module(
     sub_resource: str | None,
     operations: list[dict[str, Any]],
     sub_resources_info: list[tuple[str, str, str]] | None = None,
+    enum_models: set[str] | None = None,
 ) -> str:
     """Generate Python source for a resource module."""
     if sub_resource:
@@ -1113,6 +1151,7 @@ def generate_resource_module(
             renames,
             is_async=False,
             sub_resources=sub_resources_info,
+            enum_models=enum_models,
         )
     )
     lines.append("")
@@ -1125,6 +1164,7 @@ def generate_resource_module(
             renames,
             is_async=True,
             sub_resources=sub_resources_info,
+            enum_models=enum_models,
         )
     )
 
@@ -1293,6 +1333,11 @@ def main() -> None:
     total_groups = len(groups)
     print(f"  {total_ops} operations across {total_groups} groups")
 
+    # Discover enum model names so we can avoid emitting .model_validate() for them
+    enum_models = _discover_enum_models()
+    if enum_models:
+        print(f"  {len(enum_models)} enum models detected (will guard against model_validate)")
+
     # Clean old resources/ directory
     old_resources = JIRAPI_DIR / "resources"
     if old_resources.exists():
@@ -1327,12 +1372,13 @@ def main() -> None:
             None,
             core_ops,
             sub_resources_info=sub_info or None,
+            enum_models=enum_models,
         )
         (group_dir / "_resource.py").write_text(core_source)
 
         # Write sub-resource modules
         for sk in sub_keys:
-            sub_source = generate_resource_module(group, sk, bucket[sk])
+            sub_source = generate_resource_module(group, sk, bucket[sk], enum_models=enum_models)
             (group_dir / f"{sk}.py").write_text(sub_source)
 
         # Write __init__.py

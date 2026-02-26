@@ -50,6 +50,29 @@ jobs:
       - name: Run Ruff Format Check
         run: task format:check
 
+  typecheck:
+    name: ty
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v6
+
+      - name: Install go-task
+        uses: go-task/setup-task@v1
+        with:
+          version: 3.x
+
+      - name: Set up UV
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: task setup
+
+      - name: Run ty
+        run: task typecheck
+
   test:
     name: tests (python ${{ matrix.python }})
     runs-on: ubuntu-latest
@@ -102,7 +125,7 @@ jobs:
 
   publish:
     name: publish to PyPI
-    needs: [lint, test]
+    needs: [lint, typecheck, test]
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     permissions:
