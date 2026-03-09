@@ -1,5 +1,13 @@
 # jirapi
 
+[![CI](https://github.com/brett-fitz/jirapi/actions/workflows/ci.yml/badge.svg)](https://github.com/brett-fitz/jirapi/actions/workflows/ci.yml)
+[![PyPI](https://img.shields.io/pypi/v/jirapi)](https://pypi.org/project/jirapi/)
+[![Python](https://img.shields.io/pypi/pyversions/jirapi)](https://pypi.org/project/jirapi/)
+[![License](https://img.shields.io/pypi/l/jirapi)](LICENSE)
+[![Downloads](https://img.shields.io/pypi/dm/jirapi)](https://pypistats.org/packages/jirapi)
+[![Checked with ty](https://img.shields.io/badge/type--checked-ty-blue)](https://github.com/astral-sh/ty)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
 Modern, type-safe Python client for the **Jira Cloud REST API** — built on [HTTPX](https://www.python-httpx.org/) for first-class sync and async support.
 
 ## Features
@@ -195,19 +203,13 @@ except AuthenticationError:
 
 ## Pagination
 
-jirapi provides pagination helpers for all three patterns used by the Jira API:
+Resource methods that return lists handle pagination automatically. For lower-level control, jirapi exposes helpers for all three patterns used by the Jira API — offset-based (`startAt`/`total`), PageBean (`values`/`isLast`), and cursor-based (`nextPageToken`):
 
 ```python
-from jirapi.pagination import paginate_offset, paginate_page_bean
-
-# Offset-based (e.g. issue search)
-for issue in paginate_offset(jira._request, "GET", "/rest/api/3/search", results_key="issues"):
-    print(issue["key"])
-
-# PageBean-based (e.g. project search)
-for project in paginate_page_bean(jira._request, "GET", "/rest/api/3/project/search"):
-    print(project["name"])
+from jirapi.pagination import paginate_offset, paginate_page_bean, paginate_cursor
 ```
+
+Each helper accepts a request callable, HTTP method, path, and optional parameters, then yields individual items across all pages. See the `jirapi.pagination` module docstring for full signatures and async variants (`paginate_offset_async`, `paginate_page_bean_async`, `paginate_cursor_async`).
 
 ## Configuration
 
@@ -246,40 +248,24 @@ uv run python scripts/generate_resources.py
 
 ```
 jirapi/
-├── __init__.py          # Public API exports
-├── client.py            # Jira (sync) + AsyncJira — entry points
-├── _base_client.py      # Shared HTTP logic, auth, error checking
-├── _resource.py         # SyncAPIResource / AsyncAPIResource bases
-├── _types.py            # Type aliases (JSON, Params, T)
-├── exceptions.py        # Exception hierarchy
-├── pagination.py        # Offset / PageBean / cursor iterators
-├── models/              # auto-generated Pydantic v2 models
-│   └── __init__.py
-├── issues/              # Issues resource group
-│   ├── __init__.py      # Exports Issues, AsyncIssues
-│   ├── _resource.py     # Core: get, create, search, transitions, bulk ops
-│   ├── comments.py      # Sub-resource: IssueComments
-│   ├── attachments.py   # Sub-resource: IssueAttachments
-│   ├── worklogs.py      # Sub-resource: IssueWorklogs
-│   └── ...              # votes, watchers, links, properties, etc.
-├── projects/            # Projects resource group
-│   ├── _resource.py     # Core: CRUD, search, features, email, validation
-│   ├── versions.py      # Sub-resource: ProjectVersions
-│   ├── components.py    # Sub-resource: ProjectComponents
-│   └── ...              # roles, categories, templates, etc.
-├── workflows/           # Workflows + schemes, drafts, rules, statuses
-├── users/               # Users, search, preferences + properties sub-resource
-├── fields/              # Fields + custom field config sub-resources
-├── screens/             # Screens + schemes, tabs sub-resources
-├── labels/              # Standalone: Labels (1 method)
-├── webhooks/            # Standalone: Webhooks
-└── ...                  # 39 resource packages total
+├── client.py          # Jira (sync) + AsyncJira entry points
+├── _base_client.py    # Shared HTTP logic, auth, error handling
+├── models/            # 1 000+ auto-generated Pydantic v2 models (domain-split)
+├── <group>/           # 39 resource packages (issues/, projects/, workflows/, …)
+│   ├── _resource.py   # Core methods for the group
+│   └── *.py           # Optional sub-resource modules (comments, versions, …)
+├── pagination.py      # Offset / PageBean / cursor iterators
+└── exceptions.py      # Typed exception hierarchy
 
 scripts/
-├── generate_models.py     # OpenAPI → Pydantic models
-└── generate_resources.py  # OpenAPI → resource packages + client wiring
+├── generate_models.py     # OpenAPI spec → Pydantic models
+└── generate_resources.py  # OpenAPI spec → resource packages + client wiring
 ```
+
+## Contributing
+
+Contributions are welcome! Please [open an issue](https://github.com/brett-fitz/jirapi/issues) first to discuss proposed changes. See the [Development](#development) section for setup instructions.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE) | [Changelog](CHANGELOG.md) | [PyPI](https://pypi.org/project/jirapi/)
