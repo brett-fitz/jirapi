@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [0.4.0] - 2026-03-09
+
+### Added
+
+- **Flexible authentication**: The client now supports three mutually exclusive auth strategies — Basic auth (`email` + `api_token`), Bearer/PAT (`token`), and custom `httpx.Auth` (`auth`). A clear `ValueError` is raised when zero or multiple strategies are supplied, or when `email` is given without `api_token` (and vice versa).
+- **Bearer token support**: New `token` parameter on `Jira` and `AsyncJira` enables Personal Access Token (PAT) and OAuth 2.0 Bearer token authentication out of the box.
+- **Custom auth pass-through**: New `auth` parameter accepts any `httpx.Auth` instance for advanced use cases such as OAuth 2.0 three-legged flows or Digest auth.
+
+### Changed (BREAKING)
+
+- `email` and `api_token` are now optional (`str | None`, default `None`). Existing code that passes both continues to work unchanged; code that relied on these being positional-only may need updating (they were already keyword-only).
+
 ## [0.3.0] - 2026-02-26
 
 ### Added

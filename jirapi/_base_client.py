@@ -8,6 +8,7 @@ via *httpx*.
 
 from __future__ import annotations
 
+from collections.abc import Generator
 import contextlib
 import logging
 from typing import Any, Self
@@ -24,6 +25,17 @@ logger = logging.getLogger("jirapi")
 _DEFAULT_TIMEOUT: float = 30.0
 
 
+class _BearerAuth(httpx.Auth):
+    """HTTPX auth handler that injects a ``Bearer`` token."""
+
+    def __init__(self, token: str) -> None:
+        self._token = token
+
+    def auth_flow(self, request: httpx.Request) -> Generator[httpx.Request, Any, None]:
+        request.headers["Authorization"] = f"Bearer {self._token}"
+        yield request
+
+
 class _BaseClient:
     """Transport-agnostic base shared by both sync and async clients.
 
@@ -32,26 +44,67 @@ class _BaseClient:
     """
 
     _base_url: str
-    _auth: httpx.BasicAuth
+    _auth: httpx.Auth
     _timeout: float
 
     def __init__(
         self,
         *,
         url: str,
-        email: str,
-        api_token: str,
+        email: str | None = None,
+        api_token: str | None = None,
+        token: str | None = None,
+        auth: httpx.Auth | None = None,
         timeout: float = _DEFAULT_TIMEOUT,
         **_httpx_client_kwargs: Any,
     ) -> None:
         self._base_url = url.rstrip("/")
-        self._auth = httpx.BasicAuth(username=email, password=api_token)
+        self._auth = self._resolve_auth(
+            email=email,
+            api_token=api_token,
+            token=token,
+            auth=auth,
+        )
         self._timeout = timeout
         self._httpx_client_kwargs = _httpx_client_kwargs
         self._default_headers = {
             "Accept": "application/json",
             "Content-Type": "application/json",
         }
+
+    @staticmethod
+    def _resolve_auth(
+        *,
+        email: str | None,
+        api_token: str | None,
+        token: str | None,
+        auth: httpx.Auth | None,
+    ) -> httpx.Auth:
+        """Validate auth arguments and return the appropriate ``httpx.Auth``."""
+        has_basic = email is not None or api_token is not None
+        has_token = token is not None
+        has_auth = auth is not None
+
+        provided = sum([has_basic, has_token, has_auth])
+        if provided == 0:
+            raise ValueError(
+                "No authentication provided. Supply one of: (email + api_token), token, or auth."
+            )
+        if provided > 1:
+            raise ValueError(
+                "Multiple authentication methods provided. Supply exactly one of: "
+                "(email + api_token), token, or auth."
+            )
+
+        if has_basic:
+            if email is None or api_token is None:
+                raise ValueError("Basic auth requires both 'email' and 'api_token'.")
+            return httpx.BasicAuth(username=email, password=api_token)
+
+        if has_token:
+            return _BearerAuth(token)  # type: ignore[arg-type]
+
+        return auth  # type: ignore[return-value]
 
     # --------------------------------------------------------------------- #
     # Response helpers
