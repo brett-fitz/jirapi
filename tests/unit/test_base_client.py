@@ -7,6 +7,7 @@ import pytest
 import respx
 
 from jirapi import AsyncJira, Jira
+from jirapi._base_client import _BearerAuth
 from jirapi.exceptions import (
     AuthenticationError,
     ForbiddenError,
@@ -18,6 +19,122 @@ from jirapi.exceptions import (
 
 
 BASE_URL = "https://test.atlassian.net"
+
+
+# ------------------------------------------------------------------ #
+# Authentication resolution
+# ------------------------------------------------------------------ #
+
+
+class TestAuthBasic:
+    """Basic auth (email + api_token) path."""
+
+    @respx.mock(base_url=BASE_URL)
+    def test_basic_auth_sets_authorization_header(
+        self,
+        respx_mock: respx.MockRouter,
+    ) -> None:
+        respx_mock.get("/rest/api/3/test").mock(
+            return_value=httpx.Response(200, json={"ok": True}),
+        )
+        client = Jira(url=BASE_URL, email="a@b.com", api_token="tok")
+        resp = client._request("GET", "/rest/api/3/test")
+        assert resp.status_code == 200
+        sent_request = respx_mock.calls.last.request
+        assert sent_request.headers["authorization"].startswith("Basic ")
+        client.close()
+
+    @respx.mock(base_url=BASE_URL)
+    def test_basic_auth_async(self) -> None:
+        client = AsyncJira(url=BASE_URL, email="a@b.com", api_token="tok")
+        assert isinstance(client._auth, httpx.BasicAuth)
+
+
+class TestAuthBearer:
+    """Bearer / PAT (token) path."""
+
+    def test_token_creates_bearer_auth(self) -> None:
+        client = Jira(url=BASE_URL, token="my-pat-123")
+        assert isinstance(client._auth, _BearerAuth)
+        client.close()
+
+    @respx.mock(base_url=BASE_URL)
+    def test_bearer_sends_correct_header(self, respx_mock: respx.MockRouter) -> None:
+        respx_mock.get("/rest/api/3/test").mock(
+            return_value=httpx.Response(200, json={"ok": True}),
+        )
+        client = Jira(url=BASE_URL, token="my-pat-123")
+        client._request("GET", "/rest/api/3/test")
+        sent_request = respx_mock.calls.last.request
+        assert sent_request.headers["authorization"] == "Bearer my-pat-123"
+        client.close()
+
+    @respx.mock(base_url=BASE_URL)
+    def test_bearer_async(self) -> None:
+        client = AsyncJira(url=BASE_URL, token="my-pat-123")
+        assert isinstance(client._auth, _BearerAuth)
+
+
+class TestAuthCustom:
+    """Custom httpx.Auth pass-through."""
+
+    def test_custom_auth_passed_through(self) -> None:
+        custom = httpx.BasicAuth(username="custom", password="secret")
+        client = Jira(url=BASE_URL, auth=custom)
+        assert client._auth is custom
+        client.close()
+
+    def test_custom_auth_async(self) -> None:
+        custom = httpx.BasicAuth(username="custom", password="secret")
+        client = AsyncJira(url=BASE_URL, auth=custom)
+        assert client._auth is custom
+
+
+class TestAuthValidation:
+    """Validation of mutually exclusive auth arguments."""
+
+    def test_no_auth_raises(self) -> None:
+        with pytest.raises(ValueError, match="No authentication provided"):
+            Jira(url=BASE_URL)
+
+    def test_email_without_api_token_raises(self) -> None:
+        with pytest.raises(ValueError, match="both 'email' and 'api_token'"):
+            Jira(url=BASE_URL, email="a@b.com")
+
+    def test_api_token_without_email_raises(self) -> None:
+        with pytest.raises(ValueError, match="both 'email' and 'api_token'"):
+            Jira(url=BASE_URL, api_token="tok")
+
+    def test_basic_plus_token_raises(self) -> None:
+        with pytest.raises(ValueError, match="Multiple authentication"):
+            Jira(url=BASE_URL, email="a@b.com", api_token="tok", token="pat")
+
+    def test_basic_plus_custom_raises(self) -> None:
+        with pytest.raises(ValueError, match="Multiple authentication"):
+            Jira(
+                url=BASE_URL,
+                email="a@b.com",
+                api_token="tok",
+                auth=httpx.BasicAuth("x", "y"),
+            )
+
+    def test_token_plus_custom_raises(self) -> None:
+        with pytest.raises(ValueError, match="Multiple authentication"):
+            Jira(url=BASE_URL, token="pat", auth=httpx.BasicAuth("x", "y"))
+
+    def test_all_three_raises(self) -> None:
+        with pytest.raises(ValueError, match="Multiple authentication"):
+            Jira(
+                url=BASE_URL,
+                email="a@b.com",
+                api_token="tok",
+                token="pat",
+                auth=httpx.BasicAuth("x", "y"),
+            )
+
+    def test_async_no_auth_raises(self) -> None:
+        with pytest.raises(ValueError, match="No authentication provided"):
+            AsyncJira(url=BASE_URL)
 
 
 class TestBuildParams:

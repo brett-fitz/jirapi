@@ -79,6 +79,46 @@ async def main():
 asyncio.run(main())
 ```
 
+## Authentication
+
+Three mutually exclusive authentication strategies are supported. Supply exactly one when constructing a client.
+
+### Basic Auth (Jira Cloud)
+
+The most common method for Jira Cloud — uses your Atlassian account email and an [API token](https://id.atlassian.com/manage-profile/security/api-tokens):
+
+```python
+jira = Jira(
+    url="https://yoursite.atlassian.net",
+    email="you@example.com",
+    api_token="your-api-token",
+)
+```
+
+### Bearer Token / Personal Access Token
+
+For Jira Data Center/Server (PATs) or when you already have an OAuth 2.0 access token:
+
+```python
+jira = Jira(
+    url="https://yoursite.atlassian.net",
+    token="your-personal-access-token",
+)
+```
+
+### Custom Auth
+
+Pass any `httpx.Auth` instance for full control — useful for OAuth 2.0 flows, Digest auth, or other schemes:
+
+```python
+import httpx
+
+jira = Jira(
+    url="https://yoursite.atlassian.net",
+    auth=httpx.BasicAuth("service-account", "secret"),
+)
+```
+
 ## Resource Groups
 
 All API endpoints are organised into logical resource groups accessible as properties on the client:
@@ -174,10 +214,14 @@ for project in paginate_page_bean(jira._request, "GET", "/rest/api/3/project/sea
 | Parameter              | Description                                      | Default |
 |------------------------|--------------------------------------------------|---------|
 | `url`                  | Jira Cloud instance URL                          | —       |
-| `email`                | Account email for Basic auth                     | —       |
-| `api_token`            | API token from id.atlassian.com                  | —       |
+| `email`                | Account email for Basic auth                     | `None`  |
+| `api_token`            | API token from id.atlassian.com                  | `None`  |
+| `token`                | Personal access token or OAuth 2.0 Bearer token  | `None`  |
+| `auth`                 | Custom `httpx.Auth` instance                     | `None`  |
 | `timeout`              | Request timeout in seconds                       | `30.0`  |
 | `**httpx_client_kwargs`| Extra kwargs passed to the underlying HTTPX client| —      |
+
+Exactly one authentication method must be provided: `email` + `api_token`, `token`, or `auth`.
 
 ## Development
 

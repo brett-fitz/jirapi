@@ -10,6 +10,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Any
 
+import httpx
+
 from jirapi._base_client import _DEFAULT_TIMEOUT, AsyncAPIClient, SyncAPIClient
 
 
@@ -60,12 +62,24 @@ __all__ = ["Jira", "AsyncJira"]
 class Jira(SyncAPIClient):
     """Synchronous Jira Cloud REST API client.
 
+    Three mutually exclusive authentication strategies are supported:
+
+    1. **Basic auth** (Jira Cloud) — ``email`` + ``api_token``
+    2. **Bearer / PAT** (Data Center, OAuth 2.0 access tokens) — ``token``
+    3. **Custom auth** — any ``httpx.Auth`` instance via ``auth``
+
     Usage::
 
         from jirapi import Jira
 
+        # Basic auth
         jira = Jira(url="https://acme.atlassian.net", email="me@acme.com", api_token="...")
-        issue = jira.issues.get("PROJ-123")
+
+        # Personal Access Token / Bearer
+        jira = Jira(url="https://acme.atlassian.net", token="your-pat")
+
+        # Custom httpx.Auth
+        jira = Jira(url="https://acme.atlassian.net", auth=my_auth)
 
     Or as a context manager::
 
@@ -77,8 +91,10 @@ class Jira(SyncAPIClient):
         self,
         *,
         url: str,
-        email: str,
-        api_token: str,
+        email: str | None = None,
+        api_token: str | None = None,
+        token: str | None = None,
+        auth: httpx.Auth | None = None,
         timeout: float = _DEFAULT_TIMEOUT,
         **httpx_client_kwargs: Any,
     ) -> None:
@@ -86,6 +102,8 @@ class Jira(SyncAPIClient):
             url=url,
             email=email,
             api_token=api_token,
+            token=token,
+            auth=auth,
             timeout=timeout,
             **httpx_client_kwargs,
         )
@@ -328,6 +346,12 @@ class Jira(SyncAPIClient):
 class AsyncJira(AsyncAPIClient):
     """Asynchronous Jira Cloud REST API client.
 
+    Three mutually exclusive authentication strategies are supported:
+
+    1. **Basic auth** (Jira Cloud) — ``email`` + ``api_token``
+    2. **Bearer / PAT** (Data Center, OAuth 2.0 access tokens) — ``token``
+    3. **Custom auth** — any ``httpx.Auth`` instance via ``auth``
+
     Usage::
 
         from jirapi import AsyncJira
@@ -342,8 +366,10 @@ class AsyncJira(AsyncAPIClient):
         self,
         *,
         url: str,
-        email: str,
-        api_token: str,
+        email: str | None = None,
+        api_token: str | None = None,
+        token: str | None = None,
+        auth: httpx.Auth | None = None,
         timeout: float = _DEFAULT_TIMEOUT,
         **httpx_client_kwargs: Any,
     ) -> None:
@@ -351,6 +377,8 @@ class AsyncJira(AsyncAPIClient):
             url=url,
             email=email,
             api_token=api_token,
+            token=token,
+            auth=auth,
             timeout=timeout,
             **httpx_client_kwargs,
         )
