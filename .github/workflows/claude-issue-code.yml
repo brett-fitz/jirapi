@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 1
 
       - name: Set up UV
-        uses: astral-sh/setup-uv@v7
+        uses: astral-sh/setup-uv@v8.1.0
         with:
           enable-cache: true
 
